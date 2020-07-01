@@ -92,6 +92,15 @@ curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
 sudo apt-get install -y nodejs
 ```
 
+6. [多用户共享NVIM配置](https://bbs.csdn.net/topics/390509468)
+Run `:version` in nvim to find the $VIM and sysinit.vim.
+Then copy your vimrc to other's home path.
+```shell
+sudo ln -s ~/.config/nvim $VIM/sysinit.vim
+sudo ln -s ~/.config/nvim /root/.config/nvim
+sudo ln -s ~/.config/coc /root/.config/coc
+```
+
 
 ## ZSH
 [参考教程](https://www.jianshu.com/p/ba782b57ae96)
