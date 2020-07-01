@@ -311,43 +311,48 @@ endfunc
 call plug#begin('~/.config/nvim/plugged')
 Plug 'mhinz/vim-startify'        " The fancy start screen of vim
 
-" Pretty dress
+" --- Pretty dress
 " 状态栏设置
 Plug 'bling/vim-bufferline'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-" Plug 'itchyny/lightline.vim'
-" Plug 'mengelbrecht/lightline-bufferline'
-" Themes
+" Git gutter
+Plug 'airblade/vim-gitgutter'
+" Other visual enhancement
+Plug 'luochen1990/rainbow'
+Plug 'tpope/vim-fugitive'        " git status in airline
+Plug 'ryanoasis/vim-devicons'    " pretty icons for vim
+
+" --- Themes
 " Plug 'ajmwagar/vim-deus'
 Plug 'morhetz/gruvbox'
 
-" General Highlighter
+" --- General Highlighter
 Plug 'chrisbra/Colorizer'    " Show colors with :ColorHighlight
 Plug 'jackguo380/vim-lsp-cxx-highlight'   " Highlighter for ccls
 
-" Taglist
+" --- Taglist
 Plug 'liuchengxu/vista.vim'  " Require ctags, support LSP
 
-" Other useful utilities
+" --- Other useful utilities
 Plug 'lambdalisue/suda.vim' " do stuff like :sudowrite
 Plug 'makerj/vim-pdf'
 
-" Dependencies
+" --- Dependencies
 Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'kana/vim-textobj-user'
 Plug 'roxma/nvim-yarp'
 
-" Debugger
+" --- Debugger
 Plug 'puremourning/vimspector', {'do': './install_gadget.py --enable-c --enable-python'}
 
-" File navigation
+" --- File navigation
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }    " Not configured
 
-" Auto Complete
+" --- Auto Complete
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-" Snippets
+" --- Snippets
 Plug 'SirVer/ultisnips'   " Not configured
 Plug 'lazyshawn/shawn-snippets'  " My snippets.
 
@@ -373,11 +378,6 @@ Plug 'tpope/vim-surround'      " Change or delete surround (cs/ds and etc.)
 Plug 'gcmt/wildfire.vim'       " in Visual mode, type i' to select all text in '', or type i) i] i} ip. This will caused select paragraph when press Enter;
 Plug 'junegunn/vim-easy-align' " gaip= to align the = in paragraph,
 Plug 'preservim/nerdcommenter' " press <L>c<L> to toggle comments
-
-" Other visual enhancement
-Plug 'luochen1990/rainbow'
-Plug 'tpope/vim-fugitive'        " git status in airline
-Plug 'ryanoasis/vim-devicons'    " pretty icons for vim
 
 call plug#end()
 
@@ -500,6 +500,8 @@ nmap ]g <Plug>(coc-git-nextchunk)
 nmap gs <Plug>(coc-git-chunkinfo)
 " show commit contains current position
 nmap gc <Plug>(coc-git-commit)
+nmap gt :GitGutterSignsToggle<CR>
+
 
 " ===
 " === MarkdownPreview
