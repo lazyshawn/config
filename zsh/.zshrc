@@ -10,8 +10,6 @@ export SAVEHIST=10000
 export HISTFILE=~/.zhistory
 # append command to history file once executed
 setopt INC_APPEND_HISTORY
-# 以附加的方式写入历史纪录
-setopt INC_APPEND_HISTORY
 # 如果连续输入的命令相同，历史纪录中只保留一个
 setopt HIST_IGNORE_DUPS
 # 为历史纪录中的命令添加时间戳
@@ -20,7 +18,8 @@ setopt EXTENDED_HISTORY
 setopt AUTO_PUSHD
 #相同的历史路径只保留一个
 setopt PUSHD_IGNORE_DUPS
-
+# 解决dpkg -l firefox*，zsh不会列出名字以firefox开头的包
+setopt no_nomatch
 #以下字符视为单词的一部分
 WORDCHARS='*?_-[]~=&;!#$%^(){}<>'
 
@@ -37,15 +36,55 @@ setopt AUTO_LIST
 setopt AUTO_MENU
 setopt MENU_COMPLETE
 
-# --- Completion caching
+# --- 自动补全缓存
 zstyle ':completion::complete:*' use-cache on
 zstyle ':completion::complete:*' cache-path .zcache
 zstyle ':completion:*:cd:*' ignore-parents parent pwd
+
+# --- 修正大小写
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}'
+
+# --- 自动补全选项
+zstyle ':completion::match:' original only
+zstyle ':completion::prefix-1:' completer _complete
+zstyle ':completion:predict:' completer _complete
+zstyle ':completion:incremental:*' completer _complete _correct
+zstyle ':completion:*' completer _complete _prefix _correct _prefix _match _approximate
+
+# --- 路径补全
+zstyle ':completion:' expand 'yes'
+zstyle ':completion:' squeeze-shlashes 'yes'
+zstyle ':completion::complete:*' '\'
+
+#--- 彩色补全菜单
+eval $(dircolors -b)
+export ZLSCOLORS="${LS_COLORS}"
+zmodload zsh/complist
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
+
+#--- kill 命令补全
+compdef pkill=kill
+compdef pkill=killall
+zstyle ':completion:::kill:' menu yes select
+zstyle ':completion:::::processes' force-list always
+zstyle ':completion::processes' command 'ps -au$USER'
 
 
 # ========================
 # === User Define
 # ========================
+# --- 空行(光标在行首)补全 cd
+user-complete(){
+    if [[ -n $BUFFER ]] ; then
+        zle expand-or-complete
+    else
+        BUFFER="cd $"
+        zle end-of-line
+    fi }
+zle -N user-complete
+bindkey "\t" user-complete
+
 # --- 在命令前插入 sudo
 sudo-command-line() {
 [[ -z $BUFFER ]] && zle up-history
@@ -63,6 +102,7 @@ bindkey "\e\e" sudo-command-line
 # --- Shrotcuts for personal path
 # use cd $xxx
 dld="/home/shawn/Downloads"
+shawn="/home/shawn/.config/shawn_config"
 # use cd ~xxx
 # hash -d dld="/home/shawn/Downloads"
 
@@ -157,7 +197,7 @@ export PATH=~/.config/i3/scripts:$PATH
 source $HOME/.config/nvim/plugged/gruvbox/gruvbox_256palette.sh
 export TERM=xterm-256color
 # export VISUAL=emacs
-# export EDITOR=nvim
+export VISUAL=nvim
 
 
 
