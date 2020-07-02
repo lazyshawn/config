@@ -1,0 +1,5 @@
+[user]
+	email = hitszshaohu@gmail.com
+	name = lazyshawn
+[alias]
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit

@@ -1,0 +1,40 @@
+{
+  "latex.build.args": [
+		"--shell-escape",
+		"-pdf",
+		"-interaction=nonstopmode",
+		"-synctex=1"
+	],
+	"latex.build.onSave": true,
+  "latex.build.executable": "xelatex",
+  "latex.forwardSearch.executable": "/usr/bin/xdg-open",
+
+  // coc-git
+  "git.realtimeGutters": false,
+  "git.addedSign.hlGroup": "GitGutterAdd",
+  "git.changedSign.hlGroup": "GitGutterChange",
+  "git.removedSign.hlGroup": "GitGutterDelete",
+  "git.topRemovedSign.hlGroup": "GitGutterDelete",
+  "git.changeRemovedSign.hlGroup": "GitGutterChangeDelete",
+
+	"languageserver": {
+    "ccls": {
+      "command": "ccls",
+      "filetypes": ["c", "cpp", "objc", "objcpp"],
+      "rootPatterns": [".ccls", "compile_commands.json", ".vim/", ".git/", ".hg/"],
+      "initializationOptions": {
+        "cache": {
+          "directory": "/tmp/ccls"
+        },
+        "highlight": { "lsRanges" : true }
+      }
+    },
+    "latex": {
+    "command": "texlab",
+    "ignoredRootPaths": ["~"],
+    "filetypes": ["tex", "bib", "plaintex", "context"]
+    }
+  },
+  "git.enableGutters": false
+}
+

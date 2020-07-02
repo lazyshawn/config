@@ -31,6 +31,10 @@ limit coredumpsize 0
 # ========================
 # === Completion
 # ========================
+# --- 初始化补全命令
+autoload -U compinit
+compinit
+
 # --- 自动补全功能
 setopt AUTO_LIST
 setopt AUTO_MENU
@@ -63,12 +67,27 @@ zmodload zsh/complist
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 
-#--- kill 命令补全
-compdef pkill=kill
-compdef pkill=killall
-zstyle ':completion:::kill:' menu yes select
-zstyle ':completion:::::processes' force-list always
-zstyle ':completion::processes' command 'ps -au$USER'
+# --- Completion in OMZ
+# https://github.com/ohmyzsh/ohmyzsh/blob/master/lib/key-bindings.zsh
+# start typing + [Up-Arrow] - fuzzy find history forward
+if [[ "${terminfo[kcuu1]}" != "" ]]; then
+  autoload -U up-line-or-beginning-search
+  zle -N up-line-or-beginning-search
+  bindkey "${terminfo[kcuu1]}" up-line-or-beginning-search
+  bindkey "\C-p" up-line-or-beginning-search
+fi
+# start typing + [Down-Arrow] - fuzzy find history backward
+if [[ "${terminfo[kcud1]}" != "" ]]; then
+  autoload -U down-line-or-beginning-search
+  zle -N down-line-or-beginning-search
+  bindkey "${terminfo[kcud1]}" down-line-or-beginning-search
+  bindkey "\C-n" down-line-or-beginning-search
+fi
+
+# Edit the current command line in $EDITOR
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey '\C-v' edit-command-line
 
 
 # ========================
@@ -114,14 +133,21 @@ alias ..='cd ..'
 # git
 alias gs='git status'
 alias gc='git clone'
+alias gl='git lg'
+alias ga='git add'
+alias gcmt='git commit -m'
+alias gd='git diff'
+alias gp='git push'
 # apt-get
 alias install='sudo apt-get install'
 alias remove='sudo apt-get remove'
 alias update='sudo apt-get update'
 alias upgrade='sudo apt-get upgrade'
-
-# --- bindkeys
-bindkey '^j' autosuggest-accept
+# terminal
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
 
 
 # ========================
@@ -153,19 +179,26 @@ zinit light-mode for \
 
 # --- Zinit plugins
 # Press <C-R> to display history directives
-zinit for \
-    light-mode  zsh-users/zsh-autosuggestions \
-    light-mode  zdharma/fast-syntax-highlighting \
-                zdharma/history-search-multi-word \
+zinit light-mode for \
+    zsh-users/zsh-autosuggestions \
+    zdharma/fast-syntax-highlighting \
+    zdharma/history-search-multi-word \
+
+# zsh-autosuggestions
+bindkey '^j' autosuggest-accept
 
 # Binary release in archive, from GitHub-releases page.
 # After automatic unpacking it provides program "fzf".
 zinit ice from"gh-r" as"program"
 zinit load junegunn/fzf-bin
 
+# ======================
+# === 主题设置
+# ======================
 # 初始化prompt
 autoload -Uz promptinit
 promptinit    
+# Pure
 zinit ice pick"async.zsh" src"pure.zsh"
 zinit light sindresorhus/pure
 
