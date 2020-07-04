@@ -17,7 +17,7 @@ curl -sL 'https://keyserver.ubuntu.com/pks/lookup?&op=get&search=0x73BC8FBCF5DE4
 sudo apt-add-repository 'deb http://archive.ubuntukylin.com/ukui focal main'
 sudo apt-get upgrade
 sudo apt-get install sogouimebs
- # 禁用IBus
+# 禁用IBus
 sudo dpkg-divert --package im-config --rename /usr/bin/ibus-daemon
 ```
 
@@ -51,9 +51,10 @@ Add SSH-key to github. Use command `ssh -T git@github.com` to test.
 
 ## Ranger
 [参考教程](https://github.com/ranger/ranger)
-```
+```shell
 sudo apt-get install ranger
 ```
+
 
 ## Neovim
 1.[安装Neovim](https://blog.csdn.net/henryhu712/article/details/80458753)
@@ -170,8 +171,40 @@ export PATH=/usr/local/texlive/2019/bin/x86_64-linux:${PATH}
 MANPATH_MAP /usr/local/texlive/2019/bin/x86_64-linux /usr/local/texlive/2019/texmf-dist/doc/man
 ```
 
-3. 字体配置
-WinFonts
 
+## 字体配置
+1. 字体安装方法
+* Move this font folder to your fonts path, which could be:
+```
+/usr/local/share/fonts    # This is your personal font_path
+/usr/share/fonts          # User's default fonts
+/etc/fonts                # System default fonts
+```
+* Then run these command:
+```Shell
+cd /FontsPath/FontsFolder
+sudo mkfontscale     # 生成核心字体信息
+sudo mkfontdir       # 生成字体文件夹
+sudo fc-cache -fv    # 刷新系统字体缓存
+```
+* Reboot or relogin.
+* Change your terminal fonts. That's all.
+
+2. [`SauceCodePro Nerd Font`](https://github.com/ryanoasis/nerd-fonts)
+
+**Usage:** 
+ranger -- [ranger_devicons](https://github.com/alexanderjeurissen/ranger_devicons<Paste>);
+vim    -- [Vista.vim](https://github.com/liuchengxu/vista.vim);
+vim    -- [vim-devicons](https://github.com/ryanoasis/vim-devicons);
+```shell
+# ragner_devicons
+git clone https://github.com/alexanderjeurissen/ranger_devicons ~/.config/ranger/plugins/ranger_devicons
+echo "default_linemode devicons" >> $HOME/.config/ranger/rc.conf
+```
+设置终端字体为`SauceCodePro Nerd Font`以更改Vim等终端软件的字体。
+
+3. WinFonts
+
+**Usage:** Latex
 
 
