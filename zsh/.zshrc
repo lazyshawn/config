@@ -118,10 +118,6 @@ bindkey "\e\e" sudo-command-line
 # 使用`dirs -v`来打印目录栈
 # 使用 `cd -<NUM>` 来跳转到以前访问过的目录
 DIRSTACKFILE="$HOME/.cache/zshdirs"
-if [[ -f $DIRSTACKFILE ]] && [[ $#dirstack -eq 0 ]]; then
-  dirstack=( ${(f)"$(< $DIRSTACKFILE)"} )
-  [[ -d $dirstack[1] ]] && cd $dirstack[1]
-fi
 chpwd() {
   print -l $PWD ${(u)dirstack} >$DIRSTACKFILE
 }
