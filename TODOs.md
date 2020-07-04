@@ -58,7 +58,7 @@ sudo apt-get install ranger
 
 ## Neovim
 1.[安装Neovim](https://blog.csdn.net/henryhu712/article/details/80458753)
-```
+```shell
 sudo apt-get install neovim
 sudo rm /usr/bin/vi
 sudo ln -s /usr/bin/nvim /usr/bin/vi
@@ -108,7 +108,7 @@ sudo apt-get install nodejs
 6. [ccls](https://github.com/MaskRay/ccls/wiki/Build)
 
 [参考教程](https://www.lazyshawn.cn/2020/04/10/coc-cls-install/)
-```
+```shell
 # Ubuntu 20.04
 sudo apt-get install ccls
 ```
@@ -175,7 +175,7 @@ MANPATH_MAP /usr/local/texlive/2019/bin/x86_64-linux /usr/local/texlive/2019/tex
 ## 字体配置
 1. 字体安装方法
 * Move this font folder to your fonts path, which could be:
-```
+```shell
 /usr/local/share/fonts    # This is your personal font_path
 /usr/share/fonts          # User's default fonts
 /etc/fonts                # System default fonts
