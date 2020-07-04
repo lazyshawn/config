@@ -1,9 +1,12 @@
 ## 安装 NVIDIA 显卡驱动
 [参考教程](https://blog.csdn.net/Thanlon/article/details/106125738)
+
 System Settings -> About -> Software Updates -> Additional Drivers
 -> Using NVIDIA driver metapackge from nvidia-driver-xxx
 
 If not success, I prefer to reinstall Ubuntu. :)
+
+## 更新软件源
 
 ## 搜狗输入法(优麒麟)
  1. [安装搜狗输入法](https://www.cnblogs.com/cocode/p/12875555.html)
@@ -14,9 +17,12 @@ curl -sL 'https://keyserver.ubuntu.com/pks/lookup?&op=get&search=0x73BC8FBCF5DE4
 sudo apt-add-repository 'deb http://archive.ubuntukylin.com/ukui focal main'
 sudo apt-get upgrade
 sudo apt-get install sogouimebs
+ # 禁用IBus
+sudo dpkg-divert --package im-config --rename /usr/bin/ibus-daemon
 ```
 
 2. 设置默认输入法
+
 System Settings -> Region & Language -> Manage Installed Languages
 -> Keyboard input method system: fcitx -> Apply System-Wide
 
@@ -26,7 +32,8 @@ Input icon -> Configure -> +(add) -> uncheck "Only Show Current Langage" -> sogo
 
 
 ## Git
-1. [安装Git](https://www.cnblogs.com/superGG1990/p/6844952.html)
+[参考教程](https://www.cnblogs.com/superGG1990/p/6844952.html)
+1. 安装Git
 ```shell
 sudo apt-get install git
  # Configure file at ~/.gitconfig
@@ -57,7 +64,9 @@ sudo ln -s /usr/bin/nvim /usr/bin/vi
 ```
 
 2. [插件管理器 vim-plug](https://github.com/junegunn/vim-plug)
+
 [域名污染问题](https://blog.csdn.net/sscc_learning/article/details/105574354)
+
 [参考教程](https://github.com/junegunn/vim-plug)
 ```shell
 sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
@@ -66,10 +75,10 @@ sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.
 
 3. 配置Nvim
 ```shell
-cd ~/Download
-git clone git@github.com:lazyshawn/.config.git config
+cd ~/.config
+git clone git@github.com:lazyshawn/.config.git shawn_config
 mkdir ~/.config/nvim
-cp config/nvim/init.vim ~/.config/nvim/init.vim
+ln -s /home/shawn/.config/shawn_config/nvim/init.vim /home/shawn/.config/nvim/init.vim
 ```
 
 4. [安装Ctags](https://github.com/universal-ctags/ctags/blob/master/docs/autotools.rst)
@@ -88,11 +97,23 @@ sudo ln -s $prefix/bin/ctags /usr/bin/ctags
 5. [安装nodejs](https://www.cnblogs.com/feiquan/p/11223487.html)
 [参考教程](https://my.oschina.net/u/4271220/blog/4328656)
 ```shell
+# Ubuntu 16.04
 curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
 sudo apt-get install -y nodejs
+# Ubuntu 20.04
+sudo apt-get install nodejs
 ```
 
-6. [多用户共享NVIM配置](https://bbs.csdn.net/topics/390509468)
+6. [ccls](https://github.com/MaskRay/ccls/wiki/Build)
+
+[参考教程](https://www.lazyshawn.cn/2020/04/10/coc-cls-install/)
+```
+# Ubuntu 20.04
+sudo apt-get install ccls
+```
+
+7. [多用户共享NVIM配置](https://bbs.csdn.net/topics/390509468)
+
 Run `:version` in nvim to find the $VIM and sysinit.vim.
 Then copy your vimrc to other's home path.
 ```shell
@@ -119,7 +140,8 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zinit/master/doc/i
 ## Chromium
 [参考教程](https://blog.csdn.net/dongchongyang/article/details/72758513)
 ```shell
-sudo add-apt-repository ppa:chromium-daily
+sudo apt-get install libcanberra-gtk-module
+# sudo add-apt-repository ppa:chromium-daily
 sudo apt-get update
 sudo apt-get install chromium-browser
 ```
@@ -132,6 +154,8 @@ sudo apt-get install chromium-browser
 sudo mount -o loop texlive2019.iso /mnt
 cd /mnt
 sudo ./install-tl
+cd /
+sudo umount /mnt
 ```
 
 2. 添加环境变量

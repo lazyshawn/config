@@ -7,7 +7,7 @@ export HISTSIZE=10000
 # number of lines saved in the history after logout
 export SAVEHIST=10000
 # location of history, mkdir first
-export HISTFILE=~/.zhistory
+export HISTFILE=~/.cache/zhistory
 # append command to history file once executed
 setopt INC_APPEND_HISTORY
 # 如果连续输入的命令相同，历史纪录中只保留一个
@@ -114,6 +114,23 @@ zle -N sudo-command-line
 # 定义快捷键为： [Esc] [Esc]
 bindkey "\e\e" sudo-command-line
 
+# --- 目录栈(dirstack)
+# 使用`dirs -v`来打印目录栈
+# 使用 `cd -<NUM>` 来跳转到以前访问过的目录
+DIRSTACKFILE="$HOME/.cache/zshdirs"
+if [[ -f $DIRSTACKFILE ]] && [[ $#dirstack -eq 0 ]]; then
+  dirstack=( ${(f)"$(< $DIRSTACKFILE)"} )
+  [[ -d $dirstack[1] ]] && cd $dirstack[1]
+fi
+chpwd() {
+  print -l $PWD ${(u)dirstack} >$DIRSTACKFILE
+}
+DIRSTACKSIZE=20
+setopt autopushd pushdsilent pushdtohome
+# Remove duplicate entries
+setopt pushdignoredups
+# This reverts the +/- operators.
+setopt pushdminus
 
 # ========================
 # === Alias
