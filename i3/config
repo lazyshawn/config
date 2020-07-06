@@ -151,29 +151,58 @@ bindsym $mod+r mode "resize"
 
 
 # ====================
-# === i3bar
-# ====================
-# Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
-bar {
-  status_command i3status
-}
-
-
-# ====================
 # === Power manage
 # ====================
-set $mode_system Select: Lock(L) Exit(E) reboot(R) Shutdown(O) Cancel(Esc/Enter)
+set $mode_system Select:     Lock(L)     Exit(E)     Reboot(R)     Shutdown(S)\
+     Cancel(Esc/Enter)
 bindsym $mod+Pause mode "$mode_system"
 mode "$mode_system" {
     bindsym l exec --no-startup-id i3lock -c '#000000', mode "default"
     bindsym e exec --no-startup-id i3-msg exit, mode "default"
     bindsym r exec --no-startup-id systemctl reboot, mode "default"
-    bindsym o exec --no-startup-id systemctl poweroff, mode "default"
-    bindsym Escape mode "default"
+    bindsym s exec --no-startup-id systemctl poweroff, mode "default"
     # back to normal: Enter or Escape
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
 
+
+# ====================
+# === Appearance
+# ====================
+# --- Wallpaper
+exec_always --no-startup-id feh --bg-scale "/home/shawn/Pictures/wallpapers/hollowknight.jpg"
+
+# ---- Windows
+# 设置窗口边框
+new_window 1pixel
+
+# --- i3bar
+bar {
+  status_command i3status -c ~/.config/i3/i3status.conf
+
+  # position top
+  # mode hide
+  workspace_buttons yes
+  # output eDP1
+  # tray_output primary
+  tray_padding 0
+  separator_symbol "|"
+
+  colors {
+  background #285477
+  statusline #dedede
+  separator #2d2d2d
+  focused_workspace #636e88 #285de7 #dedfdg
+  active_workspace #556677 #234567 #56ef67
+  inactive_workspace #636d72 #2d2d2d #dedede
+  urgent_workspace #ffffff #900000 #d23d32
+  }
+}
+
+
+# ====================
+# === Autostart
+# ====================
+exec_always compton
 

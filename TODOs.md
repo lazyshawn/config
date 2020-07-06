@@ -208,3 +208,17 @@ echo "default_linemode devicons" >> $HOME/.config/ranger/rc.conf
 **Usage:** Latex
 
 
+## 桌面管理器(i3wm)
+[参考教程](https://github.com/levinit/i3wm-config)
+1. 安装
+```shell
+sudo apt-get install i3
+```
+2. 配套软件
+* `feh`: 壁纸管理；
+* `compton`: 实现终端透明效果；
+* `scrot`: 截图软件(使用快捷键调用此工具)；
+* `blueman`: 蓝牙，其附带的托盘工具名为`blueman-applet`；
+* `mate-power-manager`: 电源管理；
+* `acpi`: 电源配置接口工具，用于显示电池信息；
+
