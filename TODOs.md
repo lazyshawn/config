@@ -37,8 +37,8 @@ Input icon -> Configure -> +(add) -> uncheck "Only Show Current Langage" -> sogo
 ```shell
 sudo apt-get install git
  # Configure file at ~/.gitconfig
-git config --global usr.name "yours@name"
-git config --global usr.email "your@email.com"
+git config --global user.name "yours@name"
+git config --global user.email "your@email.com"
 ```
 
 2. 配置ssh密钥
