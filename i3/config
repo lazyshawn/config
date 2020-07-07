@@ -1,6 +1,6 @@
 # This file has been modified by Lazyshawn.
 # i3 config file (v1)
-# Please see https://i3wm.org/docs/userguide.html for a complete reference!
+# Userguide: https://i3wm.org/docs/userguide.html
 
 # ====================
 # === System Settings
@@ -25,6 +25,15 @@ bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
+# --- focus follow mouse
+focus_follows_mouse no
+
+# --- float program
+# popups
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="task_dialog"] floating enable
+# find the program's name in "/usr/share/applications"
+for_window [class="Thunar"] floating enable
 
 # ====================
 # === Basic Keybinds
@@ -53,10 +62,6 @@ bindsym $mod+Left focus left
 bindsym $mod+Down focus down
 bindsym $mod+Up focus up
 bindsym $mod+Right focus right
-# focus the parent container
-bindsym $mod+a focus parent
-# focus the child container
-bindsym $mod+c focus child
 
 # --- Move focused window
 bindsym $mod+Shift+h move left
@@ -76,12 +81,13 @@ bindsym $mod+b split h
 bindsym $mod+v split v
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
-bindsym $mod+w layout tabbed
-bindsym $mod+e layout toggle split
+bindsym $mod+t layout tabbed
+bindsym $mod+c layout toggle split
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
 
 # --- Tiling / Floating
+# mod+button1: grag windows; mod+button2: resize windows;
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
 # change focus between tiling / floating windows
@@ -89,6 +95,12 @@ bindsym $mod+space focus mode_toggle
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
+# --- GUI file manager -- thunar
+bindsym $mod+e exec --no-startup-id thunar
+
+# --- Mouse Bindings
+# The middle button and a modifer over any part of the window kills the window
+bindsym --whole-window $mod+button2 kill
 
 
 # ====================
@@ -117,6 +129,9 @@ bindsym $mod+7 workspace number $ws7
 bindsym $mod+8 workspace number $ws8
 bindsym $mod+9 workspace number $ws9
 bindsym $mod+0 workspace number $ws10
+# switch to near workspace
+bindsym $mod+n workspace next
+bindsym $mod+p workspace prev
 
 # --- Move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace number $ws1
@@ -171,32 +186,39 @@ mode "$mode_system" {
 # === Appearance
 # ====================
 # --- Wallpaper
+# static mode
 exec_always --no-startup-id feh --bg-scale "/home/shawn/Pictures/wallpapers/hollowknight.jpg"
+# random mode
+# exec --no-startup-id  ~/.config/i3/wallpaper.sh &
 
 # ---- Windows
-# 设置窗口边框
+# 设置窗口标题栏宽度
 new_window 1pixel
+# 窗口边框宽度
+default_border pixel 2
 
 # --- i3bar
 bar {
   status_command i3status -c ~/.config/i3/i3status.conf
 
-  # position top
+  position top
+  # Press `mode`(command/win) button to show i3bar
   # mode hide
   workspace_buttons yes
   # output eDP1
   # tray_output primary
   tray_padding 0
   separator_symbol "|"
+  workspace_buttons yes
 
   colors {
-  background #285477
-  statusline #dedede
-  separator #2d2d2d
-  focused_workspace #636e88 #285de7 #dedfdg
-  active_workspace #556677 #234567 #56ef67
-  inactive_workspace #636d72 #2d2d2d #dedede
-  urgent_workspace #ffffff #900000 #d23d32
+    background #222222
+    statusline #dddddd
+    separator #666666
+    focused_workspace #0088CC #0088CC #ffffff #292F34
+    active_workspace #333333 #333333 #ffffff #FDF6E3
+    inactive_workspace #333333 #333333 #888888 #EEE8D5
+    urgent_workspace #2f343a #900000 #ffffff #E5201D
   }
 }
 
