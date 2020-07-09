@@ -193,7 +193,7 @@ exec_always --no-startup-id feh --bg-scale "/home/shawn/Pictures/wallpapers/holl
 
 # --- Color Themes
 # class                 border  backgr. text    indicator child_border
-client.focused          #4c7899 #285577 #ffffff #FF8C00   #FFDAB9
+client.focused          #555555 #555555 #ffffff #FF8C00   #FFDAB9
 client.focused_inactive #333333 #5f676a #ffffff #484e50   #5f676a
 client.unfocused        #333333 #222222 #888888 #292d2e   #555555
 client.urgent           #2f343a #900000 #ffffff #900000   #900000

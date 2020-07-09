@@ -1,96 +1,152 @@
+;==========================================================
+;
+;
+;   ██████╗  ██████╗ ██╗  ██╗   ██╗██████╗  █████╗ ██████╗
+;   ██╔══██╗██╔═══██╗██║  ╚██╗ ██╔╝██╔══██╗██╔══██╗██╔══██╗
+;   ██████╔╝██║   ██║██║   ╚████╔╝ ██████╔╝███████║██████╔╝
+;   ██╔═══╝ ██║   ██║██║    ╚██╔╝  ██╔══██╗██╔══██║██╔══██╗
+;   ██║     ╚██████╔╝███████╗██║   ██████╔╝██║  ██║██║  ██║
+;   ╚═╝      ╚═════╝ ╚══════╝╚═╝   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
+;
+;
+;   To learn more about how to configure Polybar
+;   go to https://github.com/polybar/polybar
+;
+;   The README contains a lot of information
+;
+;==========================================================
+
 [colors]
-;background = ${xrdb:color0:#222}
-background = #222
+background     = #222
 background-alt = #444
-;foreground = ${xrdb:color7:#222}
-foreground = #dfdfdf
+foreground     = #dfdfdf
 foreground-alt = #555
-primary = #ffb52a
-secondary = #e60053
-alert = #bd2c40
+primary        = #ffb52a
+secondary      = #e60053
+alert          = #bd2c40
+plain          = #b6a49b
+
 
 [bar/bar]
-background = #D93d3c3b
-foreground = #b6a49b
-width                    = 24%
-height                   = 70
-radius                   = 15
-line-size                = 0
-bottom                   = true
-border-bottom-size       = 0
-padding-left             = 0
-padding-right            = 0
-#module-margin-left       = 1
-#module-margin-right      = 1
+background          = #D93d3c3b
+foreground          = #b6a49b
+; bar position
+bottom              = false
+width               = 100%
+height              = 24
+radius              = 6
+line-size           = 2
+border-bottom-size  = 0
+padding-left        = 0
+padding-right       = 1
+module-margin-left  = 1
+module-margin-right = 1
+fixed-center = false
 
-fixed-center = true
-font-0 = San Francisco Display Regular:size=24;1
-font-1 = unifont:fontformat=truetype:size=24:antialias=false;0
-font-2 = "MaterialIcons:size=24:antialias=false;1"
-font-3 = "icomoon-extended-ultra:size=24:antialias=false;1"
-font-4 = "Ubuntu Nerd Font:size=24:antialias=false;1"
-font-5 = FontAwesome:size=24;1
+; Widgets
+; left - center - right - none
+modules-left   = i3
+modules-center = alsa pulseaudio
+modules-right  = date volume eth battery poweroff
+module-margin  = 2
+tray-position    = none
+tray-maxsize     = 24
+tray-padding     = 2
+tray-scale       = 1.0
 
-modules-left = 
-modules-center =
-modules-right = date volume eth poweroff 
-module-margin = 2
-
-;left - center - right - none
-tray-position = none
-tray-maxsize = 24
-tray-detached = false
-tray-transparent = false
-tray-padding = 2
-tray-scale = 1.0
-
-
-override-redirect = true
-offset-x = 2900
-offset-y = 20
-
-padding = 0
-
+; WM Settings
 wm-name = bar
+override-redirect = false
+
+; Font
+font-0 = SauceCodePro Nerd Font:pixelsize=12;4
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 [module/date]
 type = internal/date
 interval = 60
 date = %a %d %b
 time = %l:%M %p
-label =    %date%      %time%
-;label =  %time%
+label =   %date%   %time%
 format-padding = 1
 
-[module/volume]
-type = internal/volume
-format-volume =   <ramp-volume>  <label-volume>
-format-muted = 0%  
-ramp-volume-0 = 
-ramp-volume-1 = 
-ramp-volume-2 = 
+[module/i3]
+type = internal/i3
+format = <label-state> <label-mode>
+index-sort = true
+wrapping-scroll = false
 
-[module/poweroff]
-type = custom/script
-exec = echo "  "
-click-left = rofi -modi run,drun,window -show drun
-click-right = i3lock-fancy -pg &
-click-middle = /usr/bin/rofi-logout
-format-padding = 1
+label-mode-padding = 1
+label-mode-foreground = #000
+label-mode-background = ${colors.primary}
 
-[module/rofi]
-type = custom/script
-exec = echo "  "
-click-left = rofi -modi run,drun,window -show drun
-format-padding = 1
+; focused = Active workspace on focused monitor
+label-focused = %index%
+label-focused-background = #222
+label-focused-underline= ${colors.primary}
+label-focused-padding = 1
+
+; unfocused = Inactive workspace on any monitor
+label-unfocused = %index%
+label-unfocused-padding = 1
+
+; visible = Active workspace on unfocused monitor
+label-visible = %index%
+label-visible-background = ${self.label-focused-background}
+label-visible-underline = ${self.label-focused-underline}
+label-visible-padding = ${self.label-focused-padding}
+
+; urgent = Workspace with urgency hint set
+label-urgent = %index%
+label-urgent-background = ${colors.alert}
+label-urgent-padding = 1
+
+[module/battery]
+type = internal/battery
+full-at = 98
+
+format-charging = <animation-charging> <label-charging>
+format-discharging = <ramp-capacity> <label-discharging>
+format-full = %{F#b6a49b} %{F#b6a49b} <label-full>
+#label-charging-font = 3
+#label-discharing-font = 3
+
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+; low power alert
+ramp-capacity-0-foreground = #ff5555
+
+; it will display over the three pattern when charing
+; at a framerate 750
+; and each has a foreground color
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-2-foreground = #aaff77
+animation-charging-1-foreground = #fba922
+animation-charging-0-foreground = #ff5555
+animation-charging-framerate = 750
+
+[module/wlan]
+; Get the names of the interfaces on your machine with `ip link`
+type = internal/network
+interface = wlp4s0
+interval = 3.0
+format-connected = <label-connected>
+format-connected-prefix = " "
+format-connected-prefix-foreground = #b6a49b
+label-connected = %upspeed:5% %downspeed:5%
+format-disconnected = <label-disconnected>
+label-disconnected = not connected
+label-disconnected-foreground = #66ffffff
+format-padding = 0
 
 
 [module/eth]
 type = internal/network
-interface = enp2s0
+interface = enp3s0f1
 interval = 3.0
 format-connected = <label-connected>
 format-connected-prefix = "  "
@@ -100,4 +156,38 @@ format-disconnected = <label-disconnected>
 label-disconnected = not connected
 label-disconnected-foreground = #66ffffff
 format-padding = 1
+
+[module/alsa]
+type = interval/alsa
+; Soundcard
+master-soundcard = default
+speaker-soundcard = default
+headphone-soundcard = default
+
+interval = 5
+format-volume = <ramp-volume> <label-volume>
+
+label-muted = 🔇 muted
+label-muted-foreground = #66
+
+ramp-volume-0 = 🔈
+ramp-volume-1 = 🔉
+ramp-volume-2 = 🔊
+
+[module/pulseaudio]
+type = internal/pulseaudio
+; Sink to be used, if it exists (find using `pacmd list-sinks`, name field)
+; If not, uses default sink
+; alsa_output.pci-0000_01_00.1.hdmi-stereo
+sink = alsa_output.pci-0000_00_1f.3.analog-stereo
+
+interval = 5
+format-volume = <ramp-volume> <label-volume>
+label-muted = 🔇 muted
+label-muted-foreground = #666
+ramp-volume-0 = 🔈
+ramp-volume-1 = 🔉
+ramp-volume-2 = 🔊
+
+; vim:ft=dosini
 
