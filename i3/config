@@ -9,7 +9,7 @@
 set $mod Mod1
 
 # --- Fonts
-font pango:Sauce Code Pro 8
+font pango:Sauce Code Pro 10
 
 # --- Xss-lock: use i3lock to lock the screen before suspend
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
@@ -191,40 +191,52 @@ exec_always --no-startup-id feh --bg-scale "/home/shawn/Pictures/wallpapers/holl
 # random mode
 # exec --no-startup-id  ~/.config/i3/wallpaper.sh &
 
+# --- Color Themes
+# class                 border  backgr. text    indicator child_border
+client.focused          #4c7899 #285577 #ffffff #FF8C00   #FFDAB9
+client.focused_inactive #333333 #5f676a #ffffff #484e50   #5f676a
+client.unfocused        #333333 #222222 #888888 #292d2e   #555555
+client.urgent           #2f343a #900000 #ffffff #900000   #900000
+client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+client.background       #ffffff
+
 # ---- Windows
 # 设置窗口标题栏宽度
 new_window 1pixel
 # 窗口边框宽度
 default_border pixel 2
+# Gaps
+gaps inner 4
+# smart_gaps on
 
-# --- i3bar
-bar {
-  status_command i3status -c ~/.config/i3/i3status.conf
-
-  position top
-  # Press `mode`(command/win) button to show i3bar
-  # mode hide
-  workspace_buttons yes
-  # output eDP1
-  # tray_output primary
-  tray_padding 0
-  separator_symbol "|"
-  workspace_buttons yes
-
-  colors {
-    background #222222
-    statusline #dddddd
-    separator #666666
-    focused_workspace #0088CC #0088CC #ffffff #292F34
-    active_workspace #333333 #333333 #ffffff #FDF6E3
-    inactive_workspace #333333 #333333 #888888 #EEE8D5
-    urgent_workspace #2f343a #900000 #ffffff #E5201D
-  }
-}
+# # --- i3bar
+# bar {
+#   status_command i3status -c ~/.config/i3/i3status.conf
+#
+#   position top
+#   # Press `mode`(command/win) button to show i3bar
+#   # mode hide
+#   workspace_buttons yes
+#   tray_padding 0
+#   separator_symbol "|"
+#   workspace_buttons yes
+#   height 25    # Require i3-gaps
+#
+#   colors {
+#     background #222222
+#     statusline #dddddd
+#     separator #666666
+#     focused_workspace #0088CC #0088CC #ffffff #292F34
+#     active_workspace #333333 #333333 #ffffff #FDF6E3
+#     inactive_workspace #333333 #333333 #888888 #EEE8D5
+#     urgent_workspace #2f343a #900000 #ffffff #E5201D
+#   }
+# }
 
 
 # ====================
 # === Autostart
 # ====================
 exec_always compton
+exec_always --no-startup-id ~/.config/polybar/launch.sh
 

@@ -11,5 +11,6 @@ For more information, please read [TODOs.md](./TODOs.md).
 * [x] Nvim
 * [x] Ranger
 * [x] Zsh (Use [zinit](https://github.com/zdharma/zinit), instead of OMZ)
-* [ ] i3wm
+* [x] i3wm
+* [ ] Polybar
 

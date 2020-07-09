@@ -223,3 +223,53 @@ sudo apt-get install i3
 * `mate-power-manager`: 电源管理；
 * `acpi`: 电源配置接口工具，用于显示电池信息；
 
+3. [i3-gaps](https://github.com/Airblader/i3)(Opt)
+
+[参考教程](https://github.com/Airblader/i3/wiki/Building-from-source)
+
+```shell
+# Dependencies
+libxcb1-dev libxcb-keysyms1-dev libpango1.0-dev \
+libxcb-util0-dev libxcb-icccm4-dev libyajl-dev \
+libstartup-notification0-dev libxcb-randr0-dev \
+libev-dev libxcb-cursor-dev libxcb-xinerama0-dev \
+libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev \
+autoconf libxcb-xrm0 libxcb-xrm-dev automake libxcb-shape0-dev
+
+# Install
+cd /path/where/you/want/the/repository
+# Clone the repository
+git clone https://www.github.com/Airblader/i3 i3-gaps
+cd i3-gaps
+# Compile & install
+autoreconf --force --install
+rm -rf build/
+mkdir -p build && cd build/
+# Disabling sanitizers is important for release versions!
+# The prefix and sysconfdir are, obviously, dependent on the distribution.
+../configure --prefix=/usr --sysconfdir=/etc --disable-sanitizers
+make
+sudo make install
+```
+
+4. [Polybar](https://github.com/polybar/polybar)
+
+[参考教程](https://github.com/polybar/polybar/wiki/Compiling)
+```shell
+# Dependencies
+sudo apt-get install build-essential git cmake cmake-data pkg-config python3-sphinx libcairo2-dev libxcb1-dev libxcb-util0-dev libxcb-randr0-dev libxcb-composite0-dev python3-xcbgen xcb-proto libxcb-image0-dev libxcb-ewmh-dev libxcb-icccm4-dev
+sudo apt-get install libxcb-xkb-dev libxcb-xrm-dev libxcb-cursor-dev libasound2-dev libpulse-dev i3-wm libjsoncpp-dev libmpdclient-dev libcurl4-openssl-dev libnl-genl-3-dev
+
+# Install
+cd ~/Downloads
+git clone --recursive https://github.com/polybar/polybar
+mkdir -p polybar/build
+cd polybar/build
+cmake ..
+make -j$(nproc)
+# Optional. This will install the polybar executable in /usr/local/bin
+sudo make install
+
+# Configure
+# config path: ~/.config/polybar/config
+```
