@@ -15,6 +15,7 @@
 ;   The README contains a lot of information
 ;
 ;==========================================================
+; icons:         
 
 [colors]
 background     = #222
@@ -38,21 +39,21 @@ radius              = 6
 line-size           = 2
 border-bottom-size  = 0
 padding-left        = 0
-padding-right       = 1
-module-margin-left  = 1
-module-margin-right = 1
-fixed-center = false
+padding-right       = 0
+module-margin-left  = 0
+module-margin-right = 0
+fixed-center = true
 
 ; Widgets
 ; left - center - right - none
-modules-left   = i3
-modules-center = alsa pulseaudio
-modules-right  = date volume eth battery poweroff
+modules-left   = powermenu logo i3
+modules-center = filesys github firefox
+modules-right  = wlan eth volume battery date
 module-margin  = 2
-tray-position    = none
-tray-maxsize     = 24
-tray-padding     = 2
-tray-scale       = 1.0
+tray-position  = none
+tray-maxsize   = 24
+tray-padding   = 2
+tray-scale     = 1.0
 
 ; WM Settings
 wm-name = bar
@@ -60,6 +61,21 @@ override-redirect = false
 
 ; Font
 font-0 = SauceCodePro Nerd Font:pixelsize=12;4
+font-1 = SauceCodePro Nerd Font:pixelsize=16;4
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[module/volume]
+type = internal/alsa
+format-volume = <ramp-volume> <label-volume>
+format-volume-padding = 2
+label-muted = " Mute"
+label-muted-foreground = #66
+label-muted-padding = 2
+
+ramp-volume-font = 2
+ramp-volume-0 = " "
+ramp-volume-1 = "墳 "
+ramp-volume-2 = " "
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -69,7 +85,8 @@ interval = 60
 date = %a %d %b
 time = %l:%M %p
 label =   %date%   %time%
-format-padding = 1
+label-underline = ${colors.primary}
+format-padding = 2
 
 [module/i3]
 type = internal/i3
@@ -77,12 +94,23 @@ format = <label-state> <label-mode>
 index-sort = true
 wrapping-scroll = false
 
+ws-icon-0 = 1;
+ws-icon-1 = 2;
+ws-icon-2 = 3;
+ws-icon-3 = 4;
+
 label-mode-padding = 1
 label-mode-foreground = #000
 label-mode-background = ${colors.primary}
 
+; Available tokens:
+;   %name%
+;   %icon%
+;   %index%
+;   %output%
 ; focused = Active workspace on focused monitor
 label-focused = %index%
+label-font=2
 label-focused-background = #222
 label-focused-underline= ${colors.primary}
 label-focused-padding = 1
@@ -92,7 +120,7 @@ label-unfocused = %index%
 label-unfocused-padding = 1
 
 ; visible = Active workspace on unfocused monitor
-label-visible = %index%
+label-visible = %icon%
 label-visible-background = ${self.label-focused-background}
 label-visible-underline = ${self.label-focused-underline}
 label-visible-padding = ${self.label-focused-padding}
@@ -109,8 +137,12 @@ full-at = 98
 format-charging = <animation-charging> <label-charging>
 format-discharging = <ramp-capacity> <label-discharging>
 format-full = %{F#b6a49b} %{F#b6a49b} <label-full>
-#label-charging-font = 3
-#label-discharing-font = 3
+label-charging-font = 3
+label-discharing-font = 3
+label-full-font = 3
+format-charging-padding = 2
+format-discharging-padding = 2
+format-full-padding = 2
 
 ramp-capacity-0 = 
 ramp-capacity-1 = 
@@ -133,15 +165,14 @@ animation-charging-framerate = 750
 ; Get the names of the interfaces on your machine with `ip link`
 type = internal/network
 interface = wlp4s0
-interval = 3.0
 format-connected = <label-connected>
-format-connected-prefix = " "
+format-connected-prefix = ""
 format-connected-prefix-foreground = #b6a49b
-label-connected = %upspeed:5% %downspeed:5%
+format-connected-padding = 2
+label-connected = %downspeed:9%
 format-disconnected = <label-disconnected>
-label-disconnected = not connected
+label-disconnected = ""
 label-disconnected-foreground = #66ffffff
-format-padding = 0
 
 
 [module/eth]
@@ -149,45 +180,70 @@ type = internal/network
 interface = enp3s0f1
 interval = 3.0
 format-connected = <label-connected>
-format-connected-prefix = "  "
+format-connected-prefix = ""
 format-connected-prefix-foreground = #b6a49b
+format-connected-padding = 2
 label-connected = %downspeed:9%
 format-disconnected = <label-disconnected>
-label-disconnected = not connected
+label-disconnected = ""
 label-disconnected-foreground = #66ffffff
-format-padding = 1
 
-[module/alsa]
-type = interval/alsa
-; Soundcard
-master-soundcard = default
-speaker-soundcard = default
-headphone-soundcard = default
 
-interval = 5
-format-volume = <ramp-volume> <label-volume>
+[module/powermenu]
+type = custom/menu
+format-padding = 0
+format-font = 2
+format-background = ${colors.background}
 
-label-muted = 🔇 muted
-label-muted-foreground = #66
+label-open = "              "
+label-open-foreground = #fba922
+label-close = "  "
+label-separator = |
 
-ramp-volume-0 = 🔈
-ramp-volume-1 = 🔉
-ramp-volume-2 = 🔊
+menu-0-0 = " ⏻ "
+menu-0-0-foreground = #fba922
+menu-0-0-exec = shutdown -h now
+menu-0-1 = "  "
+menu-0-1-foreground = #fba922
+menu-0-1-exec = reboot
+menu-0-2 = "  " 
+menu-0-2-foreground = #fba922
+menu-0-2-exec = i3-msg exit
 
-[module/pulseaudio]
-type = internal/pulseaudio
-; Sink to be used, if it exists (find using `pacmd list-sinks`, name field)
-; If not, uses default sink
-; alsa_output.pci-0000_01_00.1.hdmi-stereo
-sink = alsa_output.pci-0000_00_1f.3.analog-stereo
+[module/filesys]
+type = custom/text
+content = ""
+content-padding = 1
+content-font = 2
+content-foreground = ${colors.plain}
+click-left = thunar &
+content-underline= ${colors.primary}
 
-interval = 5
-format-volume = <ramp-volume> <label-volume>
-label-muted = 🔇 muted
-label-muted-foreground = #666
-ramp-volume-0 = 🔈
-ramp-volume-1 = 🔉
-ramp-volume-2 = 🔊
+[module/github]
+type = custom/text
+content = ""
+content-padding = 1
+content-font = 2
+content-foreground = ${colors.plain}
+click-left = xdg-open https://github.com &
+content-underline= ${colors.primary}
+
+[module/firefox]
+type = custom/text
+content = ""
+content-padding = 1
+content-font = 2
+content-foreground = ${colors.plain}
+click-left = xdg-open https://www.baidu.com &
+content-underline= ${colors.primary}
+
+
+[module/logo]
+type = custom/text
+content = ""
+content-padding = 1
+content-font = 2
+content-foreground = ${colors.plain}
 
 ; vim:ft=dosini
 
