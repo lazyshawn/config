@@ -107,7 +107,9 @@ bindsym $mod+Shift+n exec --no-startup-id netease-cloud-music
 # --- Mouse Bindings
 # The middle button and a modifer over any part of the window kills the window
 bindsym --whole-window $mod+button2 kill
-bindsym $mod+m /home/shawn/.config/i3/scripts/touchboard.sh
+
+# --- Touchpad control
+bindsym $mod+m exec /home/shawn/.config/i3/scripts/touchpad.sh
 
 
 # ====================
@@ -246,4 +248,6 @@ gaps inner 4
 # ====================
 exec_always compton
 exec_always --no-startup-id ~/.config/polybar/launch.sh
+# 禁用触摸板
+exec /home/shawn/.config/i3/scripts/touchpad.sh
 
