@@ -28,6 +28,42 @@ alert          = #bd2c40
 plain          = #b6a49b
 
 
+[bar/tray]
+background          = #D93d3c3b
+foreground          = #b6a49b
+; bar position
+bottom              = true
+width               = 6%
+height              = 24
+radius              = 6
+line-size           = 2
+border-bottom-size  = 0
+padding-left        = 0
+padding-right       = 0
+module-margin-left  = 0
+module-margin-right = 0
+fixed-center = true
+
+; Widgets
+; left - center - right - none
+modules-left   = 
+modules-center = 
+modules-right  = trayicon
+module-margin  = 2
+tray-position  = left
+tray-maxsize   = 24
+tray-padding   = 2
+tray-scale     = 1.0
+
+; WM Settings
+wm-name = tray
+override-redirect = true
+
+; Font
+font-0 = SauceCodePro Nerd Font:pixelsize=12;4
+font-1 = SauceCodePro Nerd Font:pixelsize=16;4
+
+
 [bar/bar]
 background          = #D93d3c3b
 foreground          = #b6a49b
@@ -144,18 +180,18 @@ format-charging-padding = 2
 format-discharging-padding = 2
 format-full-padding = 2
 
-ramp-capacity-0 = 
-ramp-capacity-1 = 
-ramp-capacity-2 = 
+ramp-capacity-0 = " "
+ramp-capacity-1 = " "
+ramp-capacity-2 = " "
 ; low power alert
 ramp-capacity-0-foreground = #ff5555
 
 ; it will display over the three pattern when charing
 ; at a framerate 750
 ; and each has a foreground color
-animation-charging-0 = 
-animation-charging-1 = 
-animation-charging-2 = 
+animation-charging-0 = " "
+animation-charging-1 = " "
+animation-charging-2 = " "
 animation-charging-2-foreground = #aaff77
 animation-charging-1-foreground = #fba922
 animation-charging-0-foreground = #ff5555
@@ -241,6 +277,13 @@ content-underline= ${colors.primary}
 [module/logo]
 type = custom/text
 content = ""
+content-padding = 1
+content-font = 2
+content-foreground = ${colors.plain}
+
+[module/trayicon]
+type = custom/text
+content = ""
 content-padding = 1
 content-font = 2
 content-foreground = ${colors.plain}

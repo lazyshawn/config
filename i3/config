@@ -20,8 +20,8 @@ exec --no-startup-id nm-applet
 
 # --- Pactl: adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
@@ -34,6 +34,9 @@ for_window [window_role="pop-up"] floating enable
 for_window [window_role="task_dialog"] floating enable
 # find the program's name in "/usr/share/applications"
 for_window [class="Thunar"] floating enable
+for_window [class="netease-cloud-music"] floating enable
+
+
 
 # ====================
 # === Basic Keybinds
@@ -98,9 +101,13 @@ floating_modifier $mod
 # --- GUI file manager -- thunar
 bindsym $mod+e exec --no-startup-id thunar
 
+# --- GUI file manager -- thunar
+bindsym $mod+Shift+n exec --no-startup-id netease-cloud-music
+
 # --- Mouse Bindings
 # The middle button and a modifer over any part of the window kills the window
 bindsym --whole-window $mod+button2 kill
+bindsym $mod+m /home/shawn/.config/i3/scripts/touchboard.sh
 
 
 # ====================
@@ -168,7 +175,7 @@ bindsym $mod+r mode "resize"
 # ====================
 # === Power manage
 # ====================
-set $mode_system Select:     Lock(L)     Exit(E)     Reboot(R)     Shutdown(S)\
+set $mode_system Lock(L)    Exit(E)    Reboot(R)    Shutdown(S)\
      Cancel(Esc/Enter)
 bindsym $mod+Pause mode "$mode_system"
 mode "$mode_system" {
