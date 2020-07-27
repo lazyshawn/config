@@ -9,6 +9,9 @@
   "latex.build.executable": "xelatex",
   "latex.forwardSearch.executable": "/usr/bin/xdg-open",
 
+  "python.linting.pylintEnabled": true,
+  "python.linting.enabled": true,
+
   // coc-git
   "git.realtimeGutters": false,
   "git.addedSign.hlGroup": "GitGutterAdd",
