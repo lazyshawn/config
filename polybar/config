@@ -1,0 +1,292 @@
+;==========================================================
+;
+;
+;   ██████╗  ██████╗ ██╗  ██╗   ██╗██████╗  █████╗ ██████╗
+;   ██╔══██╗██╔═══██╗██║  ╚██╗ ██╔╝██╔══██╗██╔══██╗██╔══██╗
+;   ██████╔╝██║   ██║██║   ╚████╔╝ ██████╔╝███████║██████╔╝
+;   ██╔═══╝ ██║   ██║██║    ╚██╔╝  ██╔══██╗██╔══██║██╔══██╗
+;   ██║     ╚██████╔╝███████╗██║   ██████╔╝██║  ██║██║  ██║
+;   ╚═╝      ╚═════╝ ╚══════╝╚═╝   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
+;
+;
+;   To learn more about how to configure Polybar
+;   go to https://github.com/polybar/polybar
+;
+;   The README contains a lot of information
+;
+;==========================================================
+; icons:         
+
+[colors]
+background     = #222
+background-alt = #444
+foreground     = #dfdfdf
+foreground-alt = #555
+primary        = #ffb52a
+secondary      = #e60053
+alert          = #bd2c40
+plain          = #b6a49b
+
+
+[bar/tray]
+background          = #D93d3c3b
+foreground          = #b6a49b
+; bar position
+bottom              = false
+width               = 6%
+height              = 24
+radius              = 6
+line-size           = 2
+border-bottom-size  = 0
+padding-left        = 0
+padding-right       = 0
+module-margin-left  = 0
+module-margin-right = 0
+fixed-center = true
+
+; Widgets
+; left - center - right - none
+modules-left   = 
+modules-center = 
+modules-right  = trayicon
+module-margin  = 2
+tray-position  = left
+tray-maxsize   = 24
+tray-padding   = 2
+tray-scale     = 1.0
+
+; WM Settings
+wm-name = tray
+override-redirect = true
+
+; Font
+font-0 = SauceCodePro Nerd Font:pixelsize=12;4
+font-1 = SauceCodePro Nerd Font:pixelsize=16;4
+
+
+[bar/bar]
+background          = #D93d3c3b
+foreground          = #b6a49b
+; bar position
+bottom              = true
+width               = 100%
+height              = 24
+radius              = 6
+line-size           = 2
+border-bottom-size  = 0
+padding-left        = 0
+padding-right       = 0
+module-margin-left  = 0
+module-margin-right = 0
+fixed-center = true
+
+; Widgets
+; left - center - right - none
+modules-left   = powermenu logo i3
+modules-center = filesys github firefox
+modules-right  = wlan eth volume battery date
+module-margin  = 2
+tray-position  = none
+tray-maxsize   = 24
+tray-padding   = 2
+tray-scale     = 1.0
+
+; WM Settings
+wm-name = bar
+override-redirect = false
+
+; Font
+font-0 = SauceCodePro Nerd Font:pixelsize=12;4
+font-1 = SauceCodePro Nerd Font:pixelsize=16;4
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[module/volume]
+type = internal/alsa
+format-volume = <ramp-volume> <label-volume>
+format-volume-padding = 2
+label-muted = " Mute"
+label-muted-foreground = #66
+label-muted-padding = 2
+
+ramp-volume-font = 2
+ramp-volume-0 = " "
+ramp-volume-1 = "墳 "
+ramp-volume-2 = " "
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[module/date]
+type = internal/date
+interval = 60
+date = %a %d %b
+time = %l:%M %p
+label =   %date%   %time%
+label-underline = ${colors.primary}
+format-padding = 2
+
+[module/i3]
+type = internal/i3
+format = <label-state> <label-mode>
+index-sort = true
+wrapping-scroll = false
+
+ws-icon-0 = 1;
+ws-icon-1 = 2;
+ws-icon-2 = 3;
+ws-icon-3 = 4;
+
+label-mode-padding = 1
+label-mode-foreground = #000
+label-mode-background = ${colors.primary}
+
+; Available tokens:
+;   %name%
+;   %icon%
+;   %index%
+;   %output%
+; focused = Active workspace on focused monitor
+label-focused = %index%
+label-font=2
+label-focused-background = #222
+label-focused-underline= ${colors.primary}
+label-focused-padding = 1
+
+; unfocused = Inactive workspace on any monitor
+label-unfocused = %index%
+label-unfocused-padding = 1
+
+; visible = Active workspace on unfocused monitor
+label-visible = %icon%
+label-visible-background = ${self.label-focused-background}
+label-visible-underline = ${self.label-focused-underline}
+label-visible-padding = ${self.label-focused-padding}
+
+; urgent = Workspace with urgency hint set
+label-urgent = %index%
+label-urgent-background = ${colors.alert}
+label-urgent-padding = 1
+
+[module/battery]
+type = internal/battery
+full-at = 98
+
+format-charging = <animation-charging> <label-charging>
+format-discharging = <ramp-capacity> <label-discharging>
+format-full = %{F#b6a49b} %{F#b6a49b} <label-full>
+label-charging-font = 3
+label-discharing-font = 3
+label-full-font = 3
+format-charging-padding = 2
+format-discharging-padding = 2
+format-full-padding = 2
+
+ramp-capacity-0 = " "
+ramp-capacity-1 = " "
+ramp-capacity-2 = " "
+; low power alert
+ramp-capacity-0-foreground = #ff5555
+
+; it will display over the three pattern when charing
+; at a framerate 750
+; and each has a foreground color
+animation-charging-0 = " "
+animation-charging-1 = " "
+animation-charging-2 = " "
+animation-charging-2-foreground = #aaff77
+animation-charging-1-foreground = #fba922
+animation-charging-0-foreground = #ff5555
+animation-charging-framerate = 750
+
+[module/wlan]
+; Get the names of the interfaces on your machine with `ip link`
+type = internal/network
+interface = wlp4s0
+format-connected = <label-connected>
+format-connected-prefix = ""
+format-connected-prefix-foreground = #b6a49b
+format-connected-padding = 2
+label-connected = %downspeed:9%
+format-disconnected = <label-disconnected>
+label-disconnected = ""
+label-disconnected-foreground = #66ffffff
+
+
+[module/eth]
+type = internal/network
+interface = enp3s0f1
+interval = 3.0
+format-connected = <label-connected>
+format-connected-prefix = ""
+format-connected-prefix-foreground = #b6a49b
+format-connected-padding = 2
+label-connected = %downspeed:9%
+format-disconnected = <label-disconnected>
+label-disconnected = ""
+label-disconnected-foreground = #66ffffff
+
+
+[module/powermenu]
+type = custom/menu
+format-padding = 0
+format-font = 2
+format-background = ${colors.background}
+
+label-open = "              "
+label-open-foreground = #fba922
+label-close = "  "
+label-separator = |
+
+menu-0-0 = " ⏻ "
+menu-0-0-foreground = #fba922
+menu-0-0-exec = shutdown -h now
+menu-0-1 = "  "
+menu-0-1-foreground = #fba922
+menu-0-1-exec = reboot
+menu-0-2 = "  " 
+menu-0-2-foreground = #fba922
+menu-0-2-exec = i3-msg exit
+
+[module/filesys]
+type = custom/text
+content = ""
+content-padding = 1
+content-font = 2
+content-foreground = ${colors.plain}
+click-left = thunar &
+content-underline= ${colors.primary}
+
+[module/github]
+type = custom/text
+content = ""
+content-padding = 1
+content-font = 2
+content-foreground = ${colors.plain}
+click-left = xdg-open https://github.com &
+content-underline= ${colors.primary}
+
+[module/firefox]
+type = custom/text
+content = ""
+content-padding = 1
+content-font = 2
+content-foreground = ${colors.plain}
+click-left = xdg-open https://www.baidu.com &
+content-underline= ${colors.primary}
+
+
+[module/logo]
+type = custom/text
+content = ""
+content-padding = 1
+content-font = 2
+content-foreground = ${colors.plain}
+
+[module/trayicon]
+type = custom/text
+content = ""
+content-padding = 1
+content-font = 2
+content-foreground = ${colors.plain}
+
+; vim:ft=dosini
+

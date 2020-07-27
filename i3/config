@@ -1,6 +1,6 @@
 # This file has been modified by Lazyshawn.
 # i3 config file (v1)
-# Please see https://i3wm.org/docs/userguide.html for a complete reference!
+# Userguide: https://i3wm.org/docs/userguide.html
 
 # ====================
 # === System Settings
@@ -9,7 +9,7 @@
 set $mod Mod1
 
 # --- Fonts
-font pango:Sauce Code Pro 8
+font pango:Sauce Code Pro 10
 
 # --- Xss-lock: use i3lock to lock the screen before suspend
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
@@ -20,10 +20,22 @@ exec --no-startup-id nm-applet
 
 # --- Pactl: adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+
+# --- focus follow mouse
+focus_follows_mouse no
+
+# --- float program
+# popups
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="task_dialog"] floating enable
+# find the program's name in "/usr/share/applications"
+for_window [class="Thunar"] floating enable
+for_window [class="netease-cloud-music"] floating enable
+
 
 
 # ====================
@@ -53,10 +65,6 @@ bindsym $mod+Left focus left
 bindsym $mod+Down focus down
 bindsym $mod+Up focus up
 bindsym $mod+Right focus right
-# focus the parent container
-bindsym $mod+a focus parent
-# focus the child container
-bindsym $mod+c focus child
 
 # --- Move focused window
 bindsym $mod+Shift+h move left
@@ -76,12 +84,13 @@ bindsym $mod+b split h
 bindsym $mod+v split v
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
-bindsym $mod+w layout tabbed
-bindsym $mod+e layout toggle split
+bindsym $mod+t layout tabbed
+bindsym $mod+c layout toggle split
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
 
 # --- Tiling / Floating
+# mod+button1: grag windows; mod+button2: resize windows;
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
 # change focus between tiling / floating windows
@@ -89,6 +98,18 @@ bindsym $mod+space focus mode_toggle
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
+# --- GUI file manager -- thunar
+bindsym $mod+e exec --no-startup-id thunar
+
+# --- GUI file manager -- thunar
+bindsym $mod+Shift+n exec --no-startup-id netease-cloud-music
+
+# --- Mouse Bindings
+# The middle button and a modifer over any part of the window kills the window
+bindsym --whole-window $mod+button2 kill
+
+# --- Touchpad control
+bindsym $mod+m exec /home/shawn/.config/i3/scripts/touchpad.sh
 
 
 # ====================
@@ -117,6 +138,9 @@ bindsym $mod+7 workspace number $ws7
 bindsym $mod+8 workspace number $ws8
 bindsym $mod+9 workspace number $ws9
 bindsym $mod+0 workspace number $ws10
+# switch to near workspace
+bindsym $mod+n workspace next
+bindsym $mod+p workspace prev
 
 # --- Move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace number $ws1
@@ -153,7 +177,7 @@ bindsym $mod+r mode "resize"
 # ====================
 # === Power manage
 # ====================
-set $mode_system Select:     Lock(L)     Exit(E)     Reboot(R)     Shutdown(S)\
+set $mode_system Lock(L)    Exit(E)    Reboot(R)    Shutdown(S)\
      Cancel(Esc/Enter)
 bindsym $mod+Pause mode "$mode_system"
 mode "$mode_system" {
@@ -171,38 +195,59 @@ mode "$mode_system" {
 # === Appearance
 # ====================
 # --- Wallpaper
+# static mode
 exec_always --no-startup-id feh --bg-scale "/home/shawn/Pictures/wallpapers/hollowknight.jpg"
+# random mode
+# exec --no-startup-id  ~/.config/i3/wallpaper.sh &
+
+# --- Color Themes
+# class                 border  backgr. text    indicator child_border
+client.focused          #555555 #555555 #ffffff #FF8C00   #FFDAB9
+client.focused_inactive #333333 #5f676a #ffffff #484e50   #5f676a
+client.unfocused        #333333 #222222 #888888 #292d2e   #555555
+client.urgent           #2f343a #900000 #ffffff #900000   #900000
+client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+client.background       #ffffff
 
 # ---- Windows
-# 设置窗口边框
+# 设置窗口标题栏宽度
 new_window 1pixel
+# 窗口边框宽度
+default_border pixel 2
+# Gaps
+gaps inner 4
+# smart_gaps on
 
-# --- i3bar
-bar {
-  status_command i3status -c ~/.config/i3/i3status.conf
-
-  # position top
-  # mode hide
-  workspace_buttons yes
-  # output eDP1
-  # tray_output primary
-  tray_padding 0
-  separator_symbol "|"
-
-  colors {
-  background #285477
-  statusline #dedede
-  separator #2d2d2d
-  focused_workspace #636e88 #285de7 #dedfdg
-  active_workspace #556677 #234567 #56ef67
-  inactive_workspace #636d72 #2d2d2d #dedede
-  urgent_workspace #ffffff #900000 #d23d32
-  }
-}
+# # --- i3bar
+# bar {
+#   status_command i3status -c ~/.config/i3/i3status.conf
+#
+#   position top
+#   # Press `mode`(command/win) button to show i3bar
+#   # mode hide
+#   workspace_buttons yes
+#   tray_padding 0
+#   separator_symbol "|"
+#   workspace_buttons yes
+#   height 25    # Require i3-gaps
+#
+#   colors {
+#     background #222222
+#     statusline #dddddd
+#     separator #666666
+#     focused_workspace #0088CC #0088CC #ffffff #292F34
+#     active_workspace #333333 #333333 #ffffff #FDF6E3
+#     inactive_workspace #333333 #333333 #888888 #EEE8D5
+#     urgent_workspace #2f343a #900000 #ffffff #E5201D
+#   }
+# }
 
 
 # ====================
 # === Autostart
 # ====================
 exec_always compton
+exec_always --no-startup-id ~/.config/polybar/launch.sh
+# 禁用触摸板
+exec /home/shawn/.config/i3/scripts/touchpad.sh
 
