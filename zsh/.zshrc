@@ -161,6 +161,8 @@ alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
+# ROS
+alias sb='source /opt/ros/noetic/setup.zsh'
 
 
 # ========================
@@ -231,9 +233,9 @@ export PATH=$HOME/.cargo/bin:$PATH
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
 
 # --- Texlive 2019
-export MANPATH=/usr/local/texlive/2019/texmf-dist/doc/man:$MANPATH
-export INFOPATH=/usr/local/texlive/2019/texmf-dist/doc/info:$INFOPATH
-export PATH=/usr/local/texlive/2019/bin/x86_64-linux:$PATH
+export MANPATH=/usr/local/texlive/2020/texmf-dist/doc/man:$MANPATH
+export INFOPATH=/usr/local/texlive/2020/texmf-dist/doc/info:$INFOPATH
+export PATH=/usr/local/texlive/2020/bin/x86_64-linux:$PATH
 
 # --- i3
 export PATH=~/.config/i3/scripts:$PATH

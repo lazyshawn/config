@@ -113,6 +113,7 @@ sudo ln -s $prefix/bin/ctags /usr/bin/ctags
 ```
 
 5. [安装nodejs](https://www.cnblogs.com/feiquan/p/11223487.html)
+
 [参考教程](https://my.oschina.net/u/4271220/blog/4328656)
 ```shell
 # Ubuntu 16.04
@@ -290,3 +291,13 @@ sudo make install
 # Configure
 # config path: ~/.config/polybar/config
 ```
+
+## Telegram
+[Telegram](https://telegram.org/)是一款通讯软件，有桌面版和[命令行版](https://github.com/vysheng/tg)
+
+1. 安装Telegram
+
+[参考教程](https://www.cnblogs.com/liuxuzzz/p/5313907.html)，
+
+2. 部署[MTProxy](https://github.com/TelegramMessenger/MTProxy)
+
