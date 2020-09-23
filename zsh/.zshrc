@@ -247,6 +247,9 @@ export TERM=xterm-256color
 # export VISUAL=emacs
 export VISUAL=nvim
 
+# --- Opencv4
+PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
+export PKG_CONFIG_PATH
 
 
 # ========================

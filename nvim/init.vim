@@ -310,11 +310,11 @@ endfunc
 " 退出插入模式和命令行模式自动切换到搜狗拼音模式源
 let g:input_toggle = 1
 function! Fcitx2en()
-    let s:input_status = system("fcitx-remote")
-    if s:input_status == 2
-        let g:input_toggle = 1
-        let l:a = system("fcitx-remote -c")
-    endif
+  let s:input_status = system("fcitx-remote")
+  if s:input_status == 2
+    let g:input_toggle = 1
+    let l:a = system("fcitx-remote -c")
+  endif
 endfunction
 set ttimeoutlen=150
 " 退出插入模式(InsertLeave),命令行模式(CmdLineLeave)(使用逗号,分隔)

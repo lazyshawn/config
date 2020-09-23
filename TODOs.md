@@ -6,7 +6,24 @@ System Settings -> About -> Software Updates -> Additional Drivers
 
 If not success, I prefer to reinstall Ubuntu. :)
 
+
 ## 更新软件源
+[参考教程](https://www.cnblogs.com/vipstone/p/9038023.html)
+1. Ubuntu apt-get-repository
+```shell
+sudo apt-get update
+sudo apt-get upgrade
+```
+2. Python repository
+```shell
+mkdir ~/.pip
+vi ~/.pip/pip.conf
+# Write these
+[global]
+index-url = https://pypi.tuna.tsinghua.edu.cn/simple
+trusted-host = pypi.tuna.tsinghua.edu.cn
+```
+
 
 ## 搜狗输入法(优麒麟)
  1. [安装搜狗输入法](https://www.cnblogs.com/cocode/p/12875555.html)
