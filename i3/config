@@ -35,6 +35,7 @@ for_window [window_role="task_dialog"] floating enable
 # find the program's name in "/usr/share/applications"
 for_window [class="Thunar"] floating enable
 for_window [class="netease-cloud-music"] floating enable
+for_window [class="Telegram"] floating enable
 
 
 
@@ -98,18 +99,20 @@ bindsym $mod+space focus mode_toggle
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
-# --- GUI file manager -- thunar
-bindsym $mod+e exec --no-startup-id thunar
-
-# --- GUI file manager -- thunar
-bindsym $mod+Shift+n exec --no-startup-id netease-cloud-music
-
 # --- Mouse Bindings
 # The middle button and a modifer over any part of the window kills the window
 bindsym --whole-window $mod+button2 kill
 
 # --- Touchpad control
 bindsym $mod+m exec /home/shawn/.config/i3/scripts/touchpad.sh
+
+# --- Apps Shortcut
+# GUI file manager -- thunar
+bindsym $mod+e exec --no-startup-id thunar
+# Netease Music
+bindsym $mod+Shift+n exec --no-startup-id netease-cloud-music
+# Telegram
+bindsym $mod+Shift+t exec --no-startup-id Telegram
 
 
 # ====================
@@ -157,15 +160,15 @@ bindsym $mod+Shift+0 move container to workspace number $ws10
 # --- Resize window (you can also use the mouse for that)
 mode "resize" {
   # These bindings trigger as soon as you enter the resize mode
-  bindsym j resize shrink width 10 px or 10 ppt
-  bindsym k resize grow height 10 px or 10 ppt
-  bindsym l resize shrink height 10 px or 10 ppt
-  bindsym semicolon resize grow width 10 px or 10 ppt
+  bindsym j resize shrink width 5 px or 5 ppt
+  bindsym k resize grow height 5 px or 5 ppt
+  bindsym l resize shrink height 5 px or 5 ppt
+  bindsym semicolon resize grow width 5 px or 5 ppt
   # same bindings, but for the arrow keys
-  bindsym Left resize shrink width 10 px or 10 ppt
-  bindsym Down resize grow height 10 px or 10 ppt
-  bindsym Up resize shrink height 10 px or 10 ppt
-  bindsym Right resize grow width 10 px or 10 ppt
+  bindsym Left resize shrink width 5 px or 5 ppt
+  bindsym Down resize grow height 5 px or 5 ppt
+  bindsym Up resize shrink height 5 px or 5 ppt
+  bindsym Right resize grow width 5 px or 5 ppt
   # back to normal: Enter or Escape or $mod+r
   bindsym Return mode "default"
   bindsym Escape mode "default"
@@ -209,16 +212,13 @@ client.urgent           #2f343a #900000 #ffffff #900000   #900000
 client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
 client.background       #ffffff
 
-# ---- Windows
+# --- Windows
 # 设置窗口标题栏宽度
 new_window 1pixel
 # 窗口边框宽度
 default_border pixel 2
-# Gaps
-gaps inner 4
-# smart_gaps on
 
-# # --- i3bar
+# --- i3bar
 # bar {
 #   status_command i3status -c ~/.config/i3/i3status.conf
 #
@@ -246,8 +246,19 @@ gaps inner 4
 # ====================
 # === Autostart
 # ====================
+# --- compton: 半透明终端
 exec_always compton
-exec_always --no-startup-id ~/.config/polybar/launch.sh
-# 禁用触摸板
+# --- 开机启动脚本
+# 禁用触摸板、禁用鼠标加速
 exec /home/shawn/.config/i3/scripts/touchpad.sh
+
+# ====================
+# === Plugins
+# ====================
+# --- Polybar: 自定义状态栏
+exec_always --no-startup-id ~/.config/polybar/launch.sh
+
+# --- i3-gaps
+gaps inner 4
+# smart_gaps on
 

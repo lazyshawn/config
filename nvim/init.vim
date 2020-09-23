@@ -317,8 +317,8 @@ function! Fcitx2en()
     endif
 endfunction
 set ttimeoutlen=150
-" 退出插入模式
-autocmd InsertLeave,CmdLineLeave * call Fcitx2en()
+" 退出插入模式(InsertLeave),命令行模式(CmdLineLeave)(使用逗号,分隔)
+autocmd InsertLeave * call Fcitx2en()
 
 
 " ===============

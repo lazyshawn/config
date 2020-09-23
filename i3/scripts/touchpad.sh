@@ -13,3 +13,6 @@ else
     xinput enable 14
 fi
 
+# 禁用鼠标加速
+xset m 00
+
