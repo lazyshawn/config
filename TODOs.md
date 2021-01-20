@@ -9,10 +9,9 @@ If not success, I prefer to reinstall Ubuntu. :)
 
 ## 更新软件源
 [参考教程](https://www.cnblogs.com/vipstone/p/9038023.html)
-1. Ubuntu apt-get-repository
+1. Ubuntu apt-repository
 ```shell
-sudo apt-get update
-sudo apt-get upgrade
+sudo apt update && sudo apt upgrade -y
 ```
 2. Python repository
 ```shell
@@ -28,12 +27,11 @@ trusted-host = pypi.tuna.tsinghua.edu.cn
 ## 搜狗输入法(优麒麟)
  1. [安装搜狗输入法](https://www.cnblogs.com/cocode/p/12875555.html)
 ```shell
-sudo apt-get install fcitx-bin    # Install fcitx
-sudo apt-get install curl     # Install curl
+sudo apt install fcitx-bin curl    # Install fcitx, curl
 curl -sL 'https://keyserver.ubuntu.com/pks/lookup?&op=get&search=0x73BC8FBCF5DE40C6ADFCFFFA9C949F2093F565FF' | sudo apt-key add
 sudo apt-add-repository 'deb http://archive.ubuntukylin.com/ukui focal main'
-sudo apt-get upgrade
-sudo apt-get install sogouimebs
+sudo apt update
+sudo apt install sogouimebs
 # 禁用IBus
 sudo dpkg-divert --package im-config --rename /usr/bin/ibus-daemon
 ```
@@ -52,7 +50,7 @@ Input icon -> Configure -> +(add) -> uncheck "Only Show Current Langage" -> sogo
 [参考教程](https://www.cnblogs.com/superGG1990/p/6844952.html)
 1. 安装Git
 ```shell
-sudo apt-get install git
+sudo apt install git
  # Configure file at ~/.gitconfig
 git config --global user.name "yours@name"
 git config --global user.email "your@email.com"
@@ -69,14 +67,14 @@ Add SSH-key to github. Use command `ssh -T git@github.com` to test.
 ## Ranger
 [参考教程](https://github.com/ranger/ranger)
 ```shell
-sudo apt-get install ranger
+sudo apt install ranger
 ```
 
 
 ## Neovim
 1.[安装Neovim](https://blog.csdn.net/henryhu712/article/details/80458753)
 ```shell
-sudo apt-get install neovim
+sudo apt install neovim
 sudo rm /usr/bin/vi
 sudo ln -s /usr/bin/nvim /usr/bin/vi
 ```
@@ -94,7 +92,7 @@ sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.
 3. 配置Nvim
 ```shell
 cd ~/.config
-git clone git@github.com:lazyshawn/.config.git shawn_config
+git clone git@github.com:lazyshawn/config.git shawn_config
 mkdir ~/.config/nvim
 ln -s /home/shawn/.config/shawn_config/nvim/init.vim /home/shawn/.config/nvim/init.vim
 ```
@@ -117,9 +115,9 @@ sudo ln -s $prefix/bin/ctags /usr/bin/ctags
 ```shell
 # Ubuntu 16.04
 curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-sudo apt-get install -y nodejs
+sudo apt install -y nodejs
 # Ubuntu 20.04
-sudo apt-get install nodejs
+sudo apt install nodejs
 ```
 
 6. [ccls](https://github.com/MaskRay/ccls/wiki/Build)
@@ -127,7 +125,7 @@ sudo apt-get install nodejs
 [参考教程](https://www.lazyshawn.cn/2020/04/10/coc-cls-install/)
 ```shell
 # Ubuntu 20.04
-sudo apt-get install ccls
+sudo apt install ccls
 ```
 
 7. [多用户共享NVIM配置](https://bbs.csdn.net/topics/390509468)
@@ -145,7 +143,7 @@ sudo ln -s ~/.config/coc /root/.config/coc
 [参考教程](https://www.jianshu.com/p/ba782b57ae96)
 1. 安装ZSH
 ```shell
-sudo apt-get install zsh
+sudo apt install zsh
 chsh -s /bin/zsh    # Set zsh as the default terminator
 ```
 
@@ -158,10 +156,10 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zinit/master/doc/i
 ## Chromium
 [参考教程](https://blog.csdn.net/dongchongyang/article/details/72758513)
 ```shell
-sudo apt-get install libcanberra-gtk-module
+sudo apt install libcanberra-gtk-module
 # sudo add-apt-repository ppa:chromium-daily
-sudo apt-get update
-sudo apt-get install chromium-browser
+sudo apt update
+sudo apt install chromium-browser
 ```
 
 
@@ -229,7 +227,7 @@ echo "default_linemode devicons" >> $HOME/.config/ranger/rc.conf
 [参考教程](https://github.com/levinit/i3wm-config)
 1. 安装
 ```shell
-sudo apt-get install i3
+sudo apt install i3
 ```
 2. 配套软件
 * `feh`: 壁纸管理；
@@ -274,8 +272,8 @@ sudo make install
 [参考教程](https://github.com/polybar/polybar/wiki/Compiling)
 ```shell
 # Dependencies
-sudo apt-get install build-essential git cmake cmake-data pkg-config python3-sphinx libcairo2-dev libxcb1-dev libxcb-util0-dev libxcb-randr0-dev libxcb-composite0-dev python3-xcbgen xcb-proto libxcb-image0-dev libxcb-ewmh-dev libxcb-icccm4-dev
-sudo apt-get install libxcb-xkb-dev libxcb-xrm-dev libxcb-cursor-dev libasound2-dev libpulse-dev i3-wm libjsoncpp-dev libmpdclient-dev libcurl4-openssl-dev libnl-genl-3-dev
+sudo apt install build-essential git cmake cmake-data pkg-config python3-sphinx libcairo2-dev libxcb1-dev libxcb-util0-dev libxcb-randr0-dev libxcb-composite0-dev python3-xcbgen xcb-proto libxcb-image0-dev libxcb-ewmh-dev libxcb-icccm4-dev
+sudo apt install libxcb-xkb-dev libxcb-xrm-dev libxcb-cursor-dev libasound2-dev libpulse-dev i3-wm libjsoncpp-dev libmpdclient-dev libcurl4-openssl-dev libnl-genl-3-dev
 
 # Install
 cd ~/Downloads

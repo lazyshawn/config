@@ -98,7 +98,7 @@ user-complete(){
     if [[ -n $BUFFER ]] ; then
         zle expand-or-complete
     else
-        BUFFER="cd $"
+        BUFFER="cd ~/"
         zle end-of-line
     fi }
 zle -N user-complete
@@ -221,11 +221,6 @@ zinit light sindresorhus/pure
 # ======================
 # === Env
 # ======================
-# --- GCC
-# export PATH=/usr/local/gcc/bin:$PATH
-# export LD_LIBRARY_PATH=/usr/local/gcc/lib64:/usr/local/gmp/lib:/usr/local/mpfr/lib:/usr/local/mpc/lib:$LD_LIBRARY_PATH
-# export MANPATH=/usr/local/gcc/share/man:$MANPATH
-
 # --- Rust
 export PATH=$HOME/.cargo/bin:$PATH
 
