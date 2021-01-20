@@ -75,5 +75,5 @@ sudo apt install chromium-browser
 
 # ===== i3wm =====
 sudo apt install i3
-sudo apt install feh compton thunar scrot blueman -y
+sudo apt install feh compton thunar flameshot blueman -y
 

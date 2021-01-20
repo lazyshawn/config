@@ -233,7 +233,7 @@ sudo apt install i3
 * `feh`: 壁纸管理；
 * `compton`: 实现终端透明效果；
 * `thunar`: 图形界面文件管理器；
-* `scrot`: 截图软件(使用快捷键调用此工具)；
+* `flameshot`: 截图软件(使用快捷键调用此工具)；
 * `blueman`: 蓝牙，其附带的托盘工具名为`blueman-applet`；
 * `mate-power-manager`: 电源管理；
 * `acpi`: 电源配置接口工具，用于显示电池信息；
