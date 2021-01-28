@@ -221,48 +221,5 @@ zinit light sindresorhus/pure
 # ======================
 # === Env
 # ======================
-# --- Rust
-export PATH=$HOME/.cargo/bin:$PATH
-
-# --- Opencv
-export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
-
-# --- Texlive 2019
-export MANPATH=/usr/local/texlive/2019/texmf-dist/doc/man:$MANPATH
-export INFOPATH=/usr/local/texlive/2019/texmf-dist/doc/info:$INFOPATH
-export PATH=/usr/local/texlive/2019/bin/x86_64-linux:$PATH
-
-# --- i3
-export PATH=~/.config/i3/scripts:$PATH
-
-
-# --- Nvim
-source $HOME/.config/nvim/plugged/gruvbox/gruvbox_256palette.sh
-export TERM=xterm-256color
-# export VISUAL=emacs
-export VISUAL=nvim
-
-# --- Opencv4
-PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
-export PKG_CONFIG_PATH
-
-
-# ========================
-# === Ranger
-# ========================
-# 用ranger打开终端时有提示符[ranger]
-if [ -n "$RANGER_LEVEL" ]; then export PS1="[RA]$PS1"; fi
-
-
-# ========================
-# === fzf
-# ========================
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-# --- preview window
-export FZF_DEFAULT_OPTS='
-  --preview "[[ $(file --mime {}) =~ binary ]] && (echo Binary file !!! {}) || (cat {}) 2> /dev/null | head -100"
-  --color fg:#ebdbb2,bg:#282828,hl:#fabd2f,fg+:#ebdbb2,bg+:#3c3836,hl+:#fabd2f
-  --color info:#83a598,prompt:#bdae93,spinner:#fabd2f,pointer:#83a598,marker:#fe8019,header:#665c54'
-# export FZF_DEFAULT_COMMAND='rg --hidden --ignore .git -g ""'
-
+source $HOME/.config/shawn_config/zsh/path.zsh
 

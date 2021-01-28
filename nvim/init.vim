@@ -431,7 +431,7 @@ let g:airline_left_alt_sep = ''
 let g:airline_right_sep = ''
 let g:airline_right_alt_sep = ''
 let g:airline_symbols.crypt = ''
-let g:airline_symbols.linenr = ''
+let g:airline_symbols.linenr = ' '
 let g:airline_symbols.maxlinenr = ''
 " let g:airline_symbols.maxlinenr = '㏑'
 let g:airline_symbols.branch = ''
@@ -523,8 +523,6 @@ nmap gt :GitGutterSignsToggle<CR>
 " === MarkdownPreview
 " ===
 " ------------ Basic settings ------------
-" Snippets
-source ~/.config/nvim/md-snippets.vim
 " auto spell
 autocmd BufRead,BufNewFile *.md setlocal spell
 

@@ -288,3 +288,10 @@ sudo make install
 # Configure
 # config path: ~/.config/polybar/config
 ```
+
+## 其他软件
+1. 7zip
+```bash
+sudo apt install p7zip-full p7zip-rar
+```
+
