@@ -152,6 +152,8 @@ chsh -s /bin/zsh    # Set zsh as the default terminator
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zinit/master/doc/install.sh)"
 ```
 
+1. 复制`zsh/path_bk.zsh`到`zsh/path.zsh`并按照个人配置修改，
+定义各种软件需要的环境变量和别名(alias)。
 
 ## Chromium
 [参考教程](https://blog.csdn.net/dongchongyang/article/details/72758513)

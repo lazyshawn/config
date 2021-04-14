@@ -192,9 +192,12 @@ noremap <LEADER>vi :e ~/.config/nvim/init.vim<CR>
 " Adjacent duplicate words
 noremap <LEADER>dw /\(\<\w\+\>\)\_s*\1<CR>
 
-" Space to tab
+" Space to tab | 将连续空格替换为tab
 nnoremap <LEADER>tt :%s/    /\t/g
 vnoremap <LEADER>tt :s/    /\t/g
+
+" Substitude
+nnoremap sg :%s/
 
 " Folding
 noremap <silent><LEADER>o za
@@ -210,6 +213,7 @@ noremap <C-h> 0
 noremap <C-l> $
 noremap <C-j> 5<C-e>
 noremap <C-k> 5<C-y>
+imap <c-l> <ESC>la
 
 " Select all
 noremap <C-a> <ESC>ggVG
@@ -517,6 +521,11 @@ nmap gs <Plug>(coc-git-chunkinfo)
 " show commit contains current position
 nmap gc <Plug>(coc-git-commit)
 nmap gt :GitGutterSignsToggle<CR>
+
+" ===
+" === vimtex
+" ===
+let g:vimtex_view_method = 'zathura'
 
 
 " ===
