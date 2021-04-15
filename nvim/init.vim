@@ -324,6 +324,26 @@ set ttimeoutlen=150
 " 退出插入模式(InsertLeave),命令行模式(CmdLineLeave)(使用逗号,分隔)
 autocmd InsertLeave * call Fcitx2en()
 
+" ===
+" === Chinese count
+" ===
+function! ChineseCount() range
+	let save = @z
+	silent exec 'normal! gv"zy'
+	let text = @z
+	let @z = save
+	silent exec 'normal! gv'
+	let cc = 0
+	for char in split(text, '\zs')
+		if char2nr(char) >= 0x2000
+			let cc += 1
+		endif
+	endfor
+	echo "Count of Chinese charasters is:"
+	echo cc
+endfunc
+vnoremap <F7> :call ChineseCount()<cr>
+
 
 " ===============
 " === Plug-in ===
