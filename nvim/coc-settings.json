@@ -35,7 +35,8 @@
             // from clang -v -fsyntax-only -x c++ /dev/null
             "extraArgs": [
                 "-isystem/usr/include/c++/9",
-                "-isystem/usr/include/x86_64-linux-gnu/c++/9"
+                "-isystem/usr/include/x86_64-linux-gnu/c++/9",
+                "-std=c++17"
             ],
             //From clang -print-resource-dir
             "resourceDir": "/usr/lib/llvm-10/lib/clang/10.0.0"

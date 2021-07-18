@@ -68,6 +68,11 @@ Add SSH-key to github. Use command `ssh -T git@github.com` to test.
 [参考教程](https://github.com/ranger/ranger)
 ```shell
 sudo apt install ranger
+# Mount and unmount
+cd ~/.config/ranger
+git clone https://github.com/SL-RU/ranger_udisk_menu ~/.config/ranger/ranger_udisk_menu
+# Compress and extract
+git clone https://github.com/maximtrp/ranger-archives.git ~/.config/ranger/plugins/ranger-archives
 ```
 
 
@@ -84,6 +89,7 @@ sudo ln -s /usr/bin/nvim /usr/bin/vi
 [域名污染问题](https://blog.csdn.net/sscc_learning/article/details/105574354)
 
 [参考教程](https://github.com/junegunn/vim-plug)
+
 ```shell
 sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
   https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
@@ -155,14 +161,22 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zinit/master/doc/i
 1. 复制`zsh/path_bk.zsh`到`zsh/path.zsh`并按照个人配置修改，
 定义各种软件需要的环境变量和别名(alias)。
 
-## Chromium
-[参考教程](https://blog.csdn.net/dongchongyang/article/details/72758513)
+## Chromium & Chrome
+1. [Chromium 安装教程](https://blog.csdn.net/dongchongyang/article/details/72758513)
 ```shell
 sudo apt install libcanberra-gtk-module
 # sudo add-apt-repository ppa:chromium-daily
 sudo apt update
 sudo apt install chromium-browser
 ```
+1. [Chrome 安装教程](https://blog.csdn.net/sinolover/article/details/94380049)
+```shell
+cd ~/Downloads
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+sudo dpkg -i google-chrome-stable_current_amd64.deb
+google-chrome  # launch chrome
+```
+
 
 
 ## Latex

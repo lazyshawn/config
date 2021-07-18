@@ -164,7 +164,7 @@ let mapleader=" " " 设置空格键为LEADER键
 noremap R :source $MYVIMRC<CR>
 map s <nop>
 map <CR> <nop>
-noremap S :w<CR>
+noremap S :w ++enc=utf-8<CR>
 noremap Q :q<CR>
 
 " Copy, cut, and paste
@@ -281,7 +281,7 @@ func! CompileRunGcc()
 		exec "!time ./%<"
 	elseif &filetype == 'cpp'
 		set splitbelow
-		exec "!g++ -std=c++11 % -Wall -o %<"
+		exec "!g++ -std=c++17 % -Wall -l pthread -o %<"
 		:sp
 		:res -15
 		:term ./%<
@@ -327,6 +327,8 @@ autocmd InsertLeave * call Fcitx2en()
 " ===
 " === Chinese count
 " ===
+" 原理是统计unicode大于0x2000的字符，下面命令有同样效果
+" :s/[^\x00-\xff]//gn
 function! ChineseCount() range
 	let save = @z
 	silent exec 'normal! gv"zy'
@@ -377,6 +379,8 @@ Plug 'liuchengxu/vista.vim'  " Require ctags, support LSP
 " --- Other useful utilities
 Plug 'lambdalisue/suda.vim' " do stuff like :sudowrite
 Plug 'makerj/vim-pdf'
+" wakatime
+Plug 'wakatime/vim-wakatime'
 
 " --- Dependencies
 Plug 'MarcWeber/vim-addon-mw-utils'
