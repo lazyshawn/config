@@ -27,6 +27,7 @@ set mouse=a    " 支持鼠标
 set encoding=utf-8
 let &t_ut=''    " 修复终端配色bug
 set autochdir
+let mapleader=" " " 设置空格键为LEADER键
 
 " ===
 " === Editor behavior
@@ -158,8 +159,6 @@ endfunction
 " ===
 " === Basic Mappings
 " ===
-let mapleader=" " " 设置空格键为LEADER键
-"
 " Source Vim配置文件
 noremap R :source $MYVIMRC<CR>
 map s <nop>
@@ -216,7 +215,7 @@ noremap <C-k> 5<C-y>
 imap <c-l> <ESC>la
 
 " Select all
-noremap <C-a> <ESC>ggVG
+imap <C-a> <ESC>ggVG
 
 " For when you forget to sudo.. Really Write the file.
 cmap w!! w !sudo tee %
@@ -262,7 +261,7 @@ autocmd BufEnter * silent! lcd %:p:h
 noremap <LEADER><CR> :set splitbelow<CR>:split<CR>:res +10<CR>:term<CR>
 
 " Press space twice to jump to the next '<++>' and edit it
-noremap <LEADER><LEADER> <Esc>/<++><CR>:nohlsearch<CR>c4l
+" noremap <LEADER><LEADER> <Esc>/<++><CR>:nohlsearch<CR>c4l
 
 " Spelling Check with <space>sc
 noremap <LEADER>sc :set spell!<CR>
@@ -520,6 +519,10 @@ nmap     <silent> gr <Plug>(coc-references)
 nmap     <leader>rn <Plug>(coc-rename)
 nmap     tt :CocCommand explorer<CR>
 nmap     so :CocCommand workspace.showOutput<CR>
+try
+    nmap <silent> gj :call CocAction('diagnosticNext')<cr>
+    nmap <silent> gk :call CocAction('diagnosticPrevious')<cr>
+endtry
 
 " Highlight the symbol and its references when holding the cursor.
 set updatetime=300
@@ -707,6 +710,15 @@ xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
 
+" ===
+" === vim-visual-multi
+" ===
+let g:VM_leader                     ='<Space><Space>'
+let g:VM_maps                       = {}
+let g:VM_maps["Undo"]               = 'u'
+let g:VM_maps["Redo"]               = '<C-r>'
+let g:VM_maps["Select Cursor Down"] = '<M-C-j>'
+let g:VM_maps["Select Cursor Up"]   = '<M-C-k>'
 
 " ============ End of Plugin Settings ============
 

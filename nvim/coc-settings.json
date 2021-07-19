@@ -49,6 +49,60 @@
     "ignoredRootPaths": ["~"],
     "filetypes": ["tex", "bib", "plaintex", "context"]
     }
+  },
+
+  // coc-explorer
+  // https://github.com/weirongxu/coc-explorer#custom-mappings-example
+  "explorer.keyMappings.global": {
+    "i": false, // cancel default mapkey
+
+    "*": ["wait", "toggleSelection", "normal:j"],
+    "<tab>": "actionMenu",
+
+    "h": ["wait", "collapse"],
+    "l": ["wait", "expandable?", "expand", "open"],
+    "J": ["wait", "normal:5j"],
+    "K": ["wait", "normal:5k"],
+
+    "gk": ["wait", "expandablePrev"],
+    "gj": ["wait", "expandableNext"],
+    "gl": ["wait", "expand:recursive"],
+    "gh": ["wait", "collapse:recursive"],
+
+    "il": "preview:labeling",
+    "ic": "preview:content",
+    "Il": "previewOnHover:toggle:labeling",
+    "Ic": "previewOnHover:toggle:content",
+    "II": "previewOnHover:disable",
+
+    "yp": "copyFilepath",
+    "yn": "copyFilename",
+    "yy": "copyFile",
+    "dd": "cutFile",
+    "p": "pasteFile",
+    "df": "delete",
+    "dF": "deleteForever",
+
+    "a": "addFile",
+    "A": "addDirectory",
+    "r": "rename",
+
+    "f": "search",
+    "F": "searchRecursive",
+
+    "zh": "toggleHidden",
+    "g<dot>": "toggleHidden",
+    "R": "refresh",
+
+    "[d": ["wait", "markPrev:diagnosticError:diagnosticWarning"],
+    "]d": ["wait", "markNext:diagnosticError:diagnosticWarning"],
+    "[D": ["wait", "markPrev:diagnosticError"],
+    "]D": ["wait", "markNext:diagnosticError"],
+
+    "[c": ["wait", "markPrev:git"],
+    "]c": ["wait", "markNext:git"],
+    ">>": "gitStage",
+    "<<": "gitUnstage"
   }
 }
 
