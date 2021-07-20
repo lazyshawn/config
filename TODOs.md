@@ -1,4 +1,4 @@
-## 安装 NVIDIA 显卡驱动
+## ✨ 安装 NVIDIA 显卡驱动
 [参考教程](https://blog.csdn.net/Thanlon/article/details/106125738)
 
 System Settings -> About -> Software Updates -> Additional Drivers
@@ -7,7 +7,7 @@ System Settings -> About -> Software Updates -> Additional Drivers
 If not success, I prefer to reinstall Ubuntu. :)
 
 
-## 更新软件源
+## ✨ 更新软件源
 [参考教程](https://www.cnblogs.com/vipstone/p/9038023.html)
 1. Ubuntu apt-repository
 ```shell
@@ -24,7 +24,16 @@ trusted-host = pypi.tuna.tsinghua.edu.cn
 ```
 
 
-## 搜狗输入法(优麒麟)
+## ✨ 更换 Caps Lock 和 Esc
+[参考链接](https://askubuntu.com/a/364019)
+```bash
+sudo apt-get install gnome-tweak-tool -y && gnome-tweak-tool
+```
+You can find an options to swap Caps Lock and Esc in "Keyboard -> Additional
+Layout Options -> Caps Lock Behavior".
+
+
+## ✨ 搜狗输入法(优麒麟)
  1. [安装搜狗输入法](https://www.cnblogs.com/cocode/p/12875555.html)
 ```shell
 sudo apt install fcitx-bin curl    # Install fcitx, curl
@@ -46,7 +55,7 @@ Reboot or logout.
 Input icon -> Configure -> +(add) -> uncheck "Only Show Current Langage" -> sogouimebs.
 
 
-## Git
+## ✨ Git
 [参考教程](https://www.cnblogs.com/superGG1990/p/6844952.html)
 1. 安装Git
 ```shell
@@ -64,7 +73,7 @@ cat ~/.ssh/id_rsa.pub
 Add SSH-key to github. Use command `ssh -T git@github.com` to test.
 
 
-## Ranger
+## ✨ Ranger
 [参考教程](https://github.com/ranger/ranger)
 ```shell
 sudo apt install ranger
@@ -76,7 +85,7 @@ git clone https://github.com/maximtrp/ranger-archives.git ~/.config/ranger/plugi
 ```
 
 
-## Neovim
+## ✨ Neovim
 1.[安装Neovim](https://blog.csdn.net/henryhu712/article/details/80458753)
 ```shell
 sudo apt install neovim
@@ -145,7 +154,7 @@ sudo ln -s ~/.config/coc /root/.config/coc
 ```
 
 
-## ZSH
+## ✨ ZSH
 [参考教程](https://www.jianshu.com/p/ba782b57ae96)
 1. 安装ZSH
 ```shell
@@ -161,7 +170,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zinit/master/doc/i
 1. 复制`zsh/path_bk.zsh`到`zsh/path.zsh`并按照个人配置修改，
 定义各种软件需要的环境变量和别名(alias)。
 
-## Chromium & Chrome
+## ✨ Chromium & Chrome
 1. [Chromium 安装教程](https://blog.csdn.net/dongchongyang/article/details/72758513)
 ```shell
 sudo apt install libcanberra-gtk-module
@@ -179,7 +188,7 @@ google-chrome  # launch chrome
 
 
 
-## Latex
+## ✨ Latex
 [参考教程](https://blog.csdn.net/williamyi96/article/details/90732304)
 1. 安装Texlive 2019
 ```shell
@@ -203,7 +212,7 @@ MANPATH_MAP /usr/local/texlive/2019/bin/x86_64-linux /usr/local/texlive/2019/tex
 ```
 
 
-## 字体配置
+## ✨ 字体配置
 1. 字体安装方法
 * Move this font folder to your fonts path, which could be:
 ```shell
@@ -239,7 +248,7 @@ echo "default_linemode devicons" >> $HOME/.config/ranger/rc.conf
 **Usage:** Latex
 
 
-## 桌面管理器(i3wm)
+## ✨ 桌面管理器(i3wm)
 [参考教程](https://github.com/levinit/i3wm-config)
 1. 安装
 ```shell
@@ -305,7 +314,7 @@ sudo make install
 # config path: ~/.config/polybar/config
 ```
 
-## 其他软件
+## ✨ 其他软件
 1. 7zip
 ```bash
 sudo apt install p7zip-full p7zip-rar
