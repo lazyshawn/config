@@ -82,6 +82,9 @@ cd ~/.config/ranger
 git clone https://github.com/SL-RU/ranger_udisk_menu ~/.config/ranger/ranger_udisk_menu
 # Compress and extract
 git clone https://github.com/maximtrp/ranger-archives.git ~/.config/ranger/plugins/ranger-archives
+# ragner_devicons
+git clone https://github.com/alexanderjeurissen/ranger_devicons ~/.config/ranger/plugins/ranger_devicons
+echo "default_linemode devicons" >> $HOME/.config/ranger/rc.conf
 ```
 
 
@@ -236,11 +239,6 @@ sudo fc-cache -fv    # 刷新系统字体缓存
 ranger -- [ranger_devicons](https://github.com/alexanderjeurissen/ranger_devicons<Paste>);
 vim    -- [Vista.vim](https://github.com/liuchengxu/vista.vim);
 vim    -- [vim-devicons](https://github.com/ryanoasis/vim-devicons);
-```shell
-# ragner_devicons
-git clone https://github.com/alexanderjeurissen/ranger_devicons ~/.config/ranger/plugins/ranger_devicons
-echo "default_linemode devicons" >> $HOME/.config/ranger/rc.conf
-```
 设置终端字体为`SauceCodePro Nerd Font`以更改Vim等终端软件的字体。
 
 3. WinFonts
