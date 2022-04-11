@@ -70,6 +70,12 @@ set visualbell
 set colorcolumn=80
 set updatetime=1000
 set virtualedit=block
+" Warp text
+" https://stackoverflow.com/questions/1272173/in-vim-how-do-i-break-one-really-long-line-into-multiple-lines
+set wrap
+set linebreak
+set textwidth=80
+set formatoptions+=tmM  " warp for CJK
 
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
@@ -182,6 +188,11 @@ nnoremap sg :%s/
 " Folding
 noremap <silent><LEADER>o za
 
+" Join lines (join! - produce extral space)
+nmap <LEADER>jj :join<CR>
+vmap <LEADER>jj :join<CR>
+
+
 " ===
 " === Cursor Movement
 " ===
@@ -196,6 +207,7 @@ noremap <C-k> 5<C-y>
 
 " Select all
 nmap <C-a> <ESC>ggVG
+imap <C-l> <ESC>la
 
 " ===
 " === Windows management
@@ -328,6 +340,9 @@ function! ChineseCount() range
 endfunc
 vnoremap <F7> :call ChineseCount()<cr>
 
+" append space between english and chinese
+" nmap ss :%s/[^\x00-\xff]\zs\ze\w\|\w\zs\ze[^\x00-\xff]/ /g
+
 " ===
 " === Keep folds on save
 " ===
@@ -382,7 +397,7 @@ Plug 'jackguo380/vim-lsp-cxx-highlight'  " Highlighter for ccls
 Plug 'cdelledonne/vim-cmake'             " CMake in vim
 
 " Markdown
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install_sync() }, 'for' :['markdown', 'vim-plug'] }
+Plug 'iamcco/markdown-preview.nvim', { 'do': ':call mkdp#util#install()', 'for': 'markdown', 'on': 'MarkdownPreview' }
 Plug 'mzlogin/vim-markdown-toc', { 'for': ['gitignore', 'markdown'] }  " auto toc
 Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeToggle' }
 
@@ -496,9 +511,6 @@ au CursorHoldI * sil call CocActionAsync('showSignatureHelp')
 xmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
 
-" Language-server
-let g:tex_flavor = "latex"
-
 " ----- coc.ccls -----
 nn <silent> <C-d> :call CocActionAsync('doHover')<cr>
 
@@ -516,6 +528,30 @@ nmap gt :GitGutterSignsToggle<CR>
 " === vimtex
 " ===
 let g:vimtex_view_method = 'zathura'
+let g:vimtex_compiler_latexmk_engines = {'_': '-xelatex'}
+let g:vimtex_fold_enabled = 1
+let g:vimtex_complete_enabled = 0
+filetype plugin indent on
+if empty(v:servername) && exists('*remote_startserver')
+call remote_startserver('VIM')
+endif
+" Close viewers when VimTeX buffers are closed
+function! CloseViewers()
+  if executable('xdotool')
+        \ && exists('b:vimtex.viewer.xwin_id')
+        \ && b:vimtex.viewer.xwin_id > 0
+    call system('xdotool windowclose '. b:vimtex.viewer.xwin_id)
+  endif
+endfunction
+augroup vimtex_close_viewers
+  au!
+  au User VimtexEventQuit call CloseViewers()
+augroup END
+" focus on vim after open viewers
+augroup vimtex_focus_on_vim
+  autocmd!
+  autocmd User VimtexEventView call b:vimtex.viewer.xdo_focus_vim()
+augroup END
 
 
 " ===
@@ -552,7 +588,7 @@ let g:mkdp_page_title    = '「${name}」'
 
 " ----------- vim-markdown-toc ----------
 nmap toc :GenTocGFM<CR>
-let g:vmt_auto_update_on_save = 1
+let g:vmt_auto_update_on_save = 0
 let g:vmt_dont_insert_fence = 0
 let g:vmt_cycle_list_item_markers = 1
 let g:vmt_fence_text              = 'TOC'
@@ -646,7 +682,7 @@ let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
 autocmd! FileType fzf
 autocmd  FileType fzf set laststatus=0 noshowmode noruler
   \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
-nmap F :GFiles<CR>
+nmap F :Files<CR>
 
 
 " ===
@@ -710,7 +746,7 @@ nmap <leader>cb :CMakeBuild<cr>
 " ===
 let g:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"','<':'>'}
 let g:AutoPairsFlyMode = 1
-let g:AutoPairsShortcutFastWrap = '<C-l>'
+let g:AutoPairsShortcutFastWrap = '<C-p>'
 
 
 " ============ End of Plugin Settings ============
