@@ -1,3 +1,10 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 # ========================
 # === Basic Settigns
 # ========================
@@ -161,6 +168,10 @@ alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
+# cmake
+alias cmake='cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1'
+# FUCK
+eval $(thefuck --alias fuck)
 
 
 # ========================
@@ -194,11 +205,16 @@ zinit light-mode for \
 # Press <C-R> to display history directives
 zinit light-mode for \
     zsh-users/zsh-autosuggestions \
-    zdharma/fast-syntax-highlighting \
+    zdharma-continuum/fast-syntax-highlighting\
     zdharma/history-search-multi-word \
+    rupa/z
 
 # zsh-autosuggestions
+bindkey '^l' autosuggest-execute
 bindkey '^j' autosuggest-accept
+# https://github.com/zsh-users/zsh-autosuggestions/issues/265#issuecomment-339235780
+bindkey '^k' forward-word
+bindkey '^h' backward-kill-word
 
 # Binary release in archive, from GitHub-releases page.
 # After automatic unpacking it provides program "fzf".
@@ -212,8 +228,10 @@ zinit load junegunn/fzf-bin
 autoload -Uz promptinit
 promptinit    
 # Pure
-zinit ice pick"async.zsh" src"pure.zsh"
-zinit light sindresorhus/pure
+# zinit ice pick"async.zsh" src"pure.zsh"
+# zinit light sindresorhus/pure
+# powerlevel10k
+zinit ice depth=1; zinit light romkatv/powerlevel10k
 
 
 # ======================
@@ -221,3 +239,7 @@ zinit light sindresorhus/pure
 # ======================
 source $HOME/.config/shawn_config/zsh/path.zsh
 
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+  export PATH="${PATH}:/home/shawn/.cargo/bin/navi"

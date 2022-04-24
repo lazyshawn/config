@@ -15,6 +15,7 @@
 ;   The README contains a lot of information
 ;
 ;==========================================================
+; bar-module
 ; icons:         
 
 [colors]
@@ -73,18 +74,17 @@ width               = 100%
 height              = 24
 radius              = 6
 line-size           = 2
-border-bottom-size  = 0
-padding-left        = 0
-padding-right       = 0
+padding             = 0
 module-margin-left  = 0
 module-margin-right = 0
 fixed-center = true
+pseudo-transparency = true
 
 ; Widgets
 ; left - center - right - none
 modules-left   = powermenu logo i3
 modules-center = filesys github firefox
-modules-right  = wlan eth volume battery date
+modules-right  = volume battery wlan eth bluetooth date
 module-margin  = 2
 tray-position  = none
 tray-maxsize   = 24
@@ -102,11 +102,12 @@ font-1 = SauceCodePro Nerd Font:pixelsize=16;4
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [module/volume]
 type = internal/alsa
+interval = 1
 format-volume = <ramp-volume> <label-volume>
 format-volume-padding = 2
-label-muted = " Mute"
+label-muted = "  Mute "
 label-muted-foreground = #66
-label-muted-padding = 2
+label-muted-padding-left = 2
 
 ramp-volume-font = 2
 ramp-volume-0 = " "
@@ -122,7 +123,7 @@ date = %a %d %b
 time = %l:%M %p
 label =   %date%   %time%
 label-underline = ${colors.primary}
-format-padding = 2
+format-padding = 1
 
 [module/i3]
 type = internal/i3
@@ -186,9 +187,8 @@ ramp-capacity-2 = " "
 ; low power alert
 ramp-capacity-0-foreground = #ff5555
 
-; it will display over the three pattern when charing
-; at a framerate 750
-; and each has a foreground color
+; it will display over the three pattern when charing at a framerate 750 and
+; each has a foreground color
 animation-charging-0 = " "
 animation-charging-1 = " "
 animation-charging-2 = " "
@@ -201,13 +201,12 @@ animation-charging-framerate = 750
 ; Get the names of the interfaces on your machine with `ip link`
 type = internal/network
 interface = wlp4s0
-format-connected = <label-connected>
-format-connected-prefix = ""
-format-connected-prefix-foreground = #b6a49b
-format-connected-padding = 2
-label-connected = %downspeed:9%
-format-disconnected = <label-disconnected>
-label-disconnected = ""
+interval = 3.0
+format-connected = %{A1:bash $HOME/.config/rofi/rofi-network-manager/rofi-network-manager.sh:} <label-connected> %{A}
+format-connected-padding = 0
+label-connected = "  %essid%"
+format-disconnected = %{A1:bash $HOME/.config/rofi/rofi-network-manager/rofi-network-manager.sh:} <label-disconnected> %{A}
+label-disconnected = "睊"
 label-disconnected-foreground = #66ffffff
 
 
@@ -216,7 +215,7 @@ type = internal/network
 interface = enp3s0f1
 interval = 3.0
 format-connected = <label-connected>
-format-connected-prefix = ""
+format-connected-prefix = " "
 format-connected-prefix-foreground = #b6a49b
 format-connected-padding = 2
 label-connected = %downspeed:9%
@@ -281,12 +280,11 @@ content-padding = 1
 content-font = 2
 content-foreground = ${colors.plain}
 
-[module/trayicon]
-type = custom/text
-content = ""
-content-padding = 1
-content-font = 2
-content-foreground = ${colors.plain}
+[module/bluetooth]
+type = custom/script
+exec = bash $HOME/.config/rofi/rofi-bluetooth/rofi-bluetooth --status
+interval = 1
+click-left = bash $HOME/.config/rofi/rofi-bluetooth/rofi-bluetooth &
 
 ; vim:ft=dosini
 

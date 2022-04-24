@@ -482,7 +482,7 @@ silent! au BufEnter,BufRead,BufNewFile * silent! unmap if
 
 let g:coc_global_extensions = ['coc-python', 'coc-texlab', 'coc-vimlsp',
     \ 'coc-gitignore', 'coc-git', 'coc-explorer', 'coc-snippets', 'coc-json',
-    \ 'coc-sumneko-lua']
+    \ 'coc-sumneko-lua', 'coc-cmake']
 inoremap <silent><expr> <c-space> coc#refresh()
 
 " Open up coc-commands

@@ -170,7 +170,25 @@ chsh -s /bin/zsh    # Set zsh as the default terminator
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zinit/master/doc/install.sh)"
 ```
 
-1. 复制`zsh/path_bk.zsh`到`zsh/path.zsh`并按照个人配置修改，
+3. ZSH 插件安装
+> ref: [Krystian Safjan's Blog](
+https://safjan.com/top-popular-zsh-plugins-on-github-2021/)
+
+| Plugins       | Description               | Installation |
+|---------------|---------------------------|:------------:|
+| thefuck       | 自动纠正上一条出错的命令  |    Debian    |
+| fzf           | fuzzy finder              |    Debian    |
+| powerlevel10k | ZSH 主体配置              |     Zinit    |
+| diff-so-fancy | git diff 语法高亮         |    Debian    |
+| z             | 命令行快速切换当前路径    |     Zinit    |
+| tig           | 文本模式的 git 仓库浏览器 |    Debian    |
+```bash
+# 上述插件的安装命令
+sudo apt install thefuck fzf diff-so-fancy tig
+```
+
+
+4. 复制`zsh/path_bk.zsh`到`zsh/path.zsh`并按照个人配置修改，
 定义各种软件需要的环境变量和别名(alias)。
 
 ## ✨ Chromium & Chrome
@@ -260,6 +278,7 @@ sudo apt install i3
 * `blueman`: 蓝牙，其附带的托盘工具名为`blueman-applet`；
 * `mate-power-manager`: 电源管理；
 * `acpi`: 电源配置接口工具，用于显示电池信息；
+* [`rofi`](https://github.com/davatorium/rofi): 高度自由定制的dmenu;
 
 3. [i3-gaps](https://github.com/Airblader/i3)(Opt)
 
