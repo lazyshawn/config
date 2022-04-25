@@ -26,6 +26,12 @@ trusted-host = pypi.tuna.tsinghua.edu.cn
 
 ## ✨ 更换 Caps Lock 和 Esc
 [参考链接](https://askubuntu.com/a/364019)
+
+1. Method 1.
+```bash
+echo "# switch caps and esc\nsetxkbmap -option caps:swapescape" >> $HOME/.profile
+```
+2. Method 2.
 ```bash
 sudo apt-get install gnome-tweak-tool -y && gnome-tweak-tool
 ```

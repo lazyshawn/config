@@ -718,6 +718,7 @@ nmap ga <Plug>(EasyAlign)
 " ===
 " === vim-visual-multi
 " ===
+" https://github.com/mg979/vim-visual-multi/blob/master/doc/vm-mappings.txt
 let g:VM_leader                     ='<Space><Space>'
 let g:VM_maps                       = {}
 let g:VM_maps["Undo"]               = 'u'

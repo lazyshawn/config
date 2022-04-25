@@ -40,6 +40,7 @@ for_window [class="Thunar"] floating enable
 for_window [class="netease-cloud-music"] floating enable
 for_window [class="Telegram"] floating enable
 for_window [class="flameshot"] floating enable
+for_window [class="vlc"] floating enable
 
 
 
