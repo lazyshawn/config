@@ -2,7 +2,7 @@
 " Ref: https://github.com/theniceboy/nvim
 
 " ===
-" === Auto load first time uses
+" === Auto install vim-plug at first time
 " ===
 if empty(glob('~/.config/nvim/autoload/plug.vim'))
     silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
@@ -70,6 +70,12 @@ set visualbell
 set colorcolumn=80
 set updatetime=1000
 set virtualedit=block
+" Warp text
+" https://stackoverflow.com/questions/1272173/in-vim-how-do-i-break-one-really-long-line-into-multiple-lines
+set wrap
+set linebreak
+set textwidth=80
+set formatoptions+=tmM  " warp for CJK
 
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
@@ -84,39 +90,23 @@ if has('persistent_undo')
 endif
 
 " Cursor shape
-let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-let &t_SR = "\<Esc>]50;CursorShape=2\x7"
-let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+" let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+" let &t_SR = "\<Esc>]50;CursorShape=2\x7"
+" let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
 
 " ===
 " === Terminal Behavior
 " ===
-let g:neoterm_autoscroll = 1
-autocmd TermOpen term://* startinsert
+" Opening a terminal window
+noremap <LEADER><CR> :set splitbelow<CR>:split<CR>:res +10<CR>:term<CR>
 
-let g:terminal_color_0  = '#000000'
-let g:terminal_color_1  = '#FF5555'
-let g:terminal_color_2  = '#50FA7B'
-let g:terminal_color_3  = '#F1FA8C'
-let g:terminal_color_4  = '#BD93F9'
-let g:terminal_color_5  = '#FF79C6'
-let g:terminal_color_6  = '#8BE9FD'
-let g:terminal_color_7  = '#BFBFBF'
-let g:terminal_color_8  = '#4D4D4D'
-let g:terminal_color_9  = '#FF6E67'
-let g:terminal_color_10 = '#5AF78E'
-let g:terminal_color_11 = '#F4F99D'
-let g:terminal_color_12 = '#CAA9FA'
-let g:terminal_color_13 = '#FF92D0'
-let g:terminal_color_14 = '#9AEDFE'
 augroup TermHandling
   autocmd!
   " Turn off line numbers, listchars, auto enter insert mode and map esc to
   " exit insert mode
   autocmd TermOpen * setlocal listchars= nonumber norelativenumber
     \ | startinsert
-  autocmd FileType fzf call LayoutTerm(0.6, 'horizontal')
 augroup END
 
 function! LayoutTerm(size, orientation) abort
@@ -170,6 +160,7 @@ noremap Q :q<CR>
 " make Y to copy till the end of line
 nnoremap Y y$
 nnoremap D d$
+nnoremap C c$
 " Copy to system clipboard
 vnoremap Y "+y
 
@@ -178,12 +169,12 @@ nnoremap < <<
 nnoremap > >>
 
 " Search
+exec "nohlsearch"
+noremap <LEADER>/ :nohlsearch<CR>
 map n <nop>
 map N <nop>
-noremap <LEADER>/ :nohlsearch<CR>
 noremap - Nzz
 noremap = nzz
-exec "nohlsearch"
 
 " Open the vimrc file anytime
 noremap <LEADER>vi :e ~/.config/nvim/init.vim<CR>
@@ -191,15 +182,16 @@ noremap <LEADER>vi :e ~/.config/nvim/init.vim<CR>
 " Adjacent duplicate words
 noremap <LEADER>dw /\(\<\w\+\>\)\_s*\1<CR>
 
-" Space to tab | 将连续空格替换为tab
-nnoremap <LEADER>tt :%s/    /\t/g
-vnoremap <LEADER>tt :s/    /\t/g
-
-" Substitude
+" Substitude %s/<a>/<b>/g
 nnoremap sg :%s/
 
 " Folding
 noremap <silent><LEADER>o za
+
+" Join lines (join! - produce extral space)
+nmap <LEADER>jj :join<CR>
+vmap <LEADER>jj :join<CR>
+
 
 " ===
 " === Cursor Movement
@@ -212,13 +204,10 @@ noremap <C-h> 0
 noremap <C-l> $
 noremap <C-j> 5<C-e>
 noremap <C-k> 5<C-y>
-imap <c-l> <ESC>la
 
 " Select all
-imap <C-a> <ESC>ggVG
-
-" For when you forget to sudo.. Really Write the file.
-cmap w!! w !sudo tee %
+nmap <C-a> <ESC>ggVG
+imap <C-l> <ESC>la
 
 " ===
 " === Windows management
@@ -244,6 +233,11 @@ map <LEADER>k <C-w>k
 map th :-tabnext<CR>
 map tl :+tabnext<CR>
 
+" 切换Buffer页面
+map bn :bn<CR>;
+map bp :bp<CR>;
+map bb :bd<CR>;
+
 " Press <SPACE> + q to close the window below the current window
 noremap <LEADER>q <C-w>j:q<CR>
 
@@ -256,9 +250,6 @@ map sb <C-w>t<C-w>H
 " ===
 " Auto change directory to current dir
 autocmd BufEnter * silent! lcd %:p:h
-
-" Opening a terminal window
-noremap <LEADER><CR> :set splitbelow<CR>:split<CR>:res +10<CR>:term<CR>
 
 " Press space twice to jump to the next '<++>' and edit it
 " noremap <LEADER><LEADER> <Esc>/<++><CR>:nohlsearch<CR>c4l
@@ -349,99 +340,87 @@ function! ChineseCount() range
 endfunc
 vnoremap <F7> :call ChineseCount()<cr>
 
+" append space between english and chinese
+" nmap ss :%s/[^\x00-\xff]\zs\ze\w\|\w\zs\ze[^\x00-\xff]/ /g
+
+" ===
+" === Keep folds on save
+" ===
+" https://stackoverflow.com/questions/37552913/vim-how-to-keep-folds-on-save
+" make `:mkview` ignores local bindings when folds are created
+set viewoptions-=options
+augroup remember_folds
+  autocmd!
+  autocmd BufWinLeave *.* mkview
+  autocmd BufWinEnter *.* silent! loadview
+augroup END
+
 
 " ===============
 " === Plug-in ===
 " ===============
 call plug#begin('~/.config/nvim/plugged')
-Plug 'mhinz/vim-startify'        " The fancy start screen of vim
-
 " --- Pretty dress
-" 状态栏设置
-Plug 'bling/vim-bufferline'
+Plug 'morhetz/gruvbox'           " Themes
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-" Git gutter
-Plug 'airblade/vim-gitgutter'
-" Other visual enhancement
-Plug 'luochen1990/rainbow'
+Plug 'airblade/vim-gitgutter'    " Git gutter
 Plug 'tpope/vim-fugitive'        " git status in airline
 Plug 'ryanoasis/vim-devicons'    " pretty icons for vim
+Plug 'mhinz/vim-startify'        " The fancy start screen of vim
 
-" --- Themes
-" Plug 'ajmwagar/vim-deus'
-Plug 'morhetz/gruvbox'
-
-" --- General Highlighter
-Plug 'chrisbra/Colorizer'    " Show colors with :ColorHighlight
-Plug 'jackguo380/vim-lsp-cxx-highlight'   " Highlighter for ccls
-
-" --- Taglist
-Plug 'liuchengxu/vista.vim'  " Require ctags, support LSP
 
 " --- Other useful utilities
-Plug 'lambdalisue/suda.vim' " do stuff like :sudowrite
-Plug 'makerj/vim-pdf'
-" wakatime
-Plug 'wakatime/vim-wakatime'
+" Plug 'wakatime/vim-wakatime'  " wakatime
+Plug 'makerj/vim-pdf'         " Make VIM as a PDF reader
+Plug 'airblade/vim-rooter'    " Changes Vim working directory to project root
+Plug 'chrisbra/Colorizer'     " Show colors with :ColorHighlight
 
-" --- Dependencies
-Plug 'MarcWeber/vim-addon-mw-utils'
-Plug 'kana/vim-textobj-user'
-Plug 'roxma/nvim-yarp'
-
-" --- Debugger
+ " --- Debugger
 Plug 'puremourning/vimspector', {'do': './install_gadget.py --enable-c --enable-python'}
 
 " --- File navigation
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }    " Not configured
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 
-" --- Auto Complete
+" --- Easy Coding
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
-" --- Snippets
-Plug 'SirVer/ultisnips'   " Not configured
+Plug 'SirVer/ultisnips'          " Snippets
 Plug 'lazyshawn/shawn-snippets'  " My snippets.
-
-" Undo Tree
-Plug 'mbbill/undotree'
+Plug 'liuchengxu/vista.vim'      " Require ctags, support LSP
 
 " Tex
 Plug 'lervag/vimtex'
 
-" Flutter
-Plug 'dart-lang/dart-vim-plugin'
-Plug 'thosakwe/vim-flutter'
+" C/C++
+Plug 'jackguo380/vim-lsp-cxx-highlight'  " Highlighter for ccls
+Plug 'cdelledonne/vim-cmake'             " CMake in vim
 
 " Markdown
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install_sync() }, 'for' :['markdown', 'vim-plug'] }
+Plug 'iamcco/markdown-preview.nvim', { 'do': ':call mkdp#util#install()', 'for': 'markdown', 'on': 'MarkdownPreview' }
+Plug 'mzlogin/vim-markdown-toc', { 'for': ['gitignore', 'markdown'] }  " auto toc
 Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeToggle' }
-Plug 'mzlogin/vim-markdown-toc', { 'for': ['gitignore', 'markdown'] }
 
 " Editor Enhancement
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 Plug 'jiangmiao/auto-pairs'
+Plug 'mbbill/undotree'         " Undo Tree
 Plug 'tpope/vim-surround'      " Change or delete surround (cs/ds and etc.)
 Plug 'gcmt/wildfire.vim'       " in Visual mode, type i' to select all text in '', or type i) i] i} ip. This will caused select paragraph when press Enter;
-Plug 'junegunn/vim-easy-align' " gaip= to align the = in paragraph,
-Plug 'preservim/nerdcommenter' " press <L>c<L> to toggle comments
+Plug 'preservim/nerdcommenter' " toggle comments
 
 call plug#end()
 
 
 " ===================== Start of Plugin Settings ======================
-" ===
-" === Color themes
-" ===
+" " ===
+" " === Color themes
+" " ===
 set termguicolors    " enable true colors support
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-" colors deus
 color gruvbox
-"color xcodedark
-
 set background=dark
 " set background=light
-
 
 
 " ===
@@ -462,9 +441,8 @@ let g:airline_left_alt_sep = ''
 let g:airline_right_sep = ''
 let g:airline_right_alt_sep = ''
 let g:airline_symbols.crypt = ''
-let g:airline_symbols.linenr = ' '
+let g:airline_symbols.linenr = '  '
 let g:airline_symbols.maxlinenr = ''
-" let g:airline_symbols.maxlinenr = '㏑'
 let g:airline_symbols.branch = ''
 let g:airline_symbols.paste = 'ρ'
 let g:airline_symbols.spell = 'Ꞩ'
@@ -474,11 +452,6 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail'
 let g:airline#extensions#tabline#left_sep = ''
 let g:airline#extensions#tabline#left_alt_sep = ''
-
-" 切换Buffer页面
-map bn :bn<CR>;
-map bp :bp<CR>;
-map bb :bd<CR>;
 
 
 " ===
@@ -507,9 +480,9 @@ endfunction
 " fix the most annoying bug that coc has
 silent! au BufEnter,BufRead,BufNewFile * silent! unmap if
 
-let g:coc_global_extensions = ['coc-python', 'coc-texlab', 'coc-vimlsp', 
+let g:coc_global_extensions = ['coc-python', 'coc-texlab', 'coc-vimlsp',
     \ 'coc-gitignore', 'coc-git', 'coc-explorer', 'coc-snippets', 'coc-json',
-    \ 'coc-sumneko-lua']
+    \ 'coc-sumneko-lua', 'coc-cmake']
 inoremap <silent><expr> <c-space> coc#refresh()
 
 " Open up coc-commands
@@ -538,9 +511,6 @@ au CursorHoldI * sil call CocActionAsync('showSignatureHelp')
 xmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
 
-" Language-server
-let g:tex_flavor = "latex"
-
 " ----- coc.ccls -----
 nn <silent> <C-d> :call CocActionAsync('doHover')<cr>
 
@@ -558,6 +528,30 @@ nmap gt :GitGutterSignsToggle<CR>
 " === vimtex
 " ===
 let g:vimtex_view_method = 'zathura'
+let g:vimtex_compiler_latexmk_engines = {'_': '-xelatex'}
+let g:vimtex_fold_enabled = 1
+let g:vimtex_complete_enabled = 0
+filetype plugin indent on
+if empty(v:servername) && exists('*remote_startserver')
+call remote_startserver('VIM')
+endif
+" Close viewers when VimTeX buffers are closed
+function! CloseViewers()
+  if executable('xdotool')
+        \ && exists('b:vimtex.viewer.xwin_id')
+        \ && b:vimtex.viewer.xwin_id > 0
+    call system('xdotool windowclose '. b:vimtex.viewer.xwin_id)
+  endif
+endfunction
+augroup vimtex_close_viewers
+  au!
+  au User VimtexEventQuit call CloseViewers()
+augroup END
+" focus on vim after open viewers
+augroup vimtex_focus_on_vim
+  autocmd!
+  autocmd User VimtexEventView call b:vimtex.viewer.xdo_focus_vim()
+augroup END
 
 
 " ===
@@ -579,22 +573,23 @@ let g:mkdp_browserfunc        = ''
 let g:mkdp_browser            = 'chromium-browser'
 " google-chrome, chromium-browser
 let g:mkdp_preview_options = {
-			\ 'mkit': {},
-			\ 'katex': {},
-			\ 'uml': {},
-			\ 'maid': {},
-			\ 'disable_sync_scroll': 0,
-			\ 'sync_scroll_type': 'middle',
-			\ 'hide_yaml_meta': 1
-			\ }
+      \ 'mkit': {},
+      \ 'katex': {},
+      \ 'uml': {},
+      \ 'maid': {},
+      \ 'disable_sync_scroll': 0,
+      \ 'sync_scroll_type': 'middle',
+      \ 'hide_yaml_meta': 1
+      \ }
 let g:mkdp_markdown_css  = ''
 let g:mkdp_highlight_css = ''
 let g:mkdp_port          = ''
 let g:mkdp_page_title    = '「${name}」'
 
 " ----------- vim-markdown-toc ----------
+nmap toc :GenTocGFM<CR>
 let g:vmt_auto_update_on_save = 0
-let g:vmt_dont_insert_fence = 1
+let g:vmt_dont_insert_fence = 0
 let g:vmt_cycle_list_item_markers = 1
 let g:vmt_fence_text              = 'TOC'
 let g:vmt_fence_closing_text      = '/TOC'
@@ -625,9 +620,6 @@ inoreabbrev <expr> __
 noremap <silent> M :Vista!!<CR>
 let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
 let g:vista_default_executive = 'ctags'
-" let g:vista_executive_for = {
-" \ 'cpp': 'coc',
-" \}
 let g:vista_fzf_preview = ['right:50%']
 let g:vista#renderer#enable_icon = 1
 let g:vista#renderer#icons = {
@@ -639,10 +631,15 @@ let g:vista#renderer#icons = {
 
 
 " ===
+" === vim-rooter
+" ===
+let g:rooter_targets = '*.cpp,*.h,*.md'
+let g:rooter_patterns = ['src', 'CMakeList.txt']
+
+" ===
 " === Ultisnips
 " ===
 inoremap <c-k> <nop>
-let g:tex_flavor = "latex"
 let g:UltiSnipsExpandTrigger="<c-j>"
 let g:UltiSnipsJumpForwardTrigger="<c-j>"
 let g:UltiSnipsJumpBackwardTrigger="<c-k>"
@@ -651,20 +648,12 @@ silent! au BufEnter,BufRead,BufNewFile * silent! unmap <c-r>
 
 
 " ===
-" === Suda.vim
-" ===
-cnoreabbrev sudowrite w suda://%
-cnoreabbrev sw w suda://%
-
-
-" ===
 " === Wildfire
 " ===
 " this selects the next closest text object.
-" unmap <CR>
-map '' <plug>(wildfire-fuel)
+map ;; <plug>(wildfire-fuel)
 " This selects the previous closest text object.
-vmap <C-SPACE> <Plug>(wildfire-water)
+" vmap '' <Plug>(wildfire-water)
 
 
 " ===
@@ -672,19 +661,43 @@ vmap <C-SPACE> <Plug>(wildfire-water)
 " ===
 let g:vimspector_enable_mappings = 'HUMAN'
 function! s:read_template_into_buffer(template)
-	" has to be a function to avoid the extra space fzf#run insers otherwise
-	execute '0r ~/.config/nvim/sample_vimspector_json/'.a:template
+  " has to be a function to avoid the extra space fzf#run insers otherwise
+  execute '0r ~/.config/nvim/sample_vimspector_json/'.a:template
 endfunction
 command! -bang -nargs=* LoadVimSpectorJsonTemplate call fzf#run({
-			\   'source': 'ls -1 ~/.config/nvim/sample_vimspector_json',
-			\   'down': 20,
-			\   'sink': function('<sid>read_template_into_buffer')
-			\ })
+      \   'source': 'ls -1 ~/.config/nvim/sample_vimspector_json',
+      \   'down': 20,
+      \   'sink': function('<sid>read_template_into_buffer')
+      \ })
 noremap <leader>vs :tabe .vimspector.json<CR>:LoadVimSpectorJsonTemplate<CR>
 sign define vimspectorBP text=☛ texthl=Normal
 sign define vimspectorBPDisabled text=☞ texthl=Normal
 sign define vimspectorPC text=🔶 texthl=SpellBa
 
+
+" ===
+" === FZF
+" ===
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
+autocmd! FileType fzf
+autocmd  FileType fzf set laststatus=0 noshowmode noruler
+  \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+nmap F :Files<CR>
+
+
+" ===
+" === undotree
+" ===
+nmap U :call undotree#UndotreeToggle()<CR>
+" e.g. using 'd' instead of 'days' to save some space.
+if !exists('g:undotree_ShortIndicators')
+    let g:undotree_ShortIndicators = 1
+endif
+" if set, let undotree window get focus after being opened, otherwise
+" focus will stay in current window.
+if !exists('g:undotree_SetFocusWhenToggle')
+    let g:undotree_SetFocusWhenToggle = 1
+endif
 
 " ===
 " === Nerdcomment
@@ -708,14 +721,6 @@ let g:NERDToggleCheckAllLines = 1
 
 
 " ===
-" === Vim-easy-align
-" ===
-" Start interactive EasyAlign in visual mode (e.g. vipga)
-xmap ga <Plug>(EasyAlign)
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nmap ga <Plug>(EasyAlign)
-
-" ===
 " === vim-visual-multi
 " ===
 " https://github.com/mg979/vim-visual-multi/blob/master/doc/vm-mappings.txt
@@ -725,6 +730,25 @@ let g:VM_maps["Undo"]               = 'u'
 let g:VM_maps["Redo"]               = '<C-r>'
 let g:VM_maps["Select Cursor Down"] = '<M-C-j>'
 let g:VM_maps["Select Cursor Up"]   = '<M-C-k>'
+
+
+" ===
+" === cdelledonne/vim-cmake
+" ===
+let g:cmake_link_compile_commands=1
+let g:cmake_root_markers = ['.git','.ccls']
+let g:cmake_default_config = 'build'
+nmap <leader>cg :CMakeGenerate<cr>
+nmap <leader>cb :CMakeBuild<cr>
+
+
+" ===
+" === auto-pairs
+" ===
+let g:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"','<':'>'}
+let g:AutoPairsFlyMode = 1
+let g:AutoPairsShortcutFastWrap = '<C-p>'
+
 
 " ============ End of Plugin Settings ============
 
