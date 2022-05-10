@@ -745,7 +745,7 @@ nmap <leader>cb :CMakeBuild<cr>
 " ===
 " === auto-pairs
 " ===
-let g:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"','<':'>'}
+let g:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"','`':'`'}
 let g:AutoPairsFlyMode = 1
 let g:AutoPairsShortcutFastWrap = '<C-p>'
 
