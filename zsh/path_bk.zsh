@@ -52,7 +52,14 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-11.1/extras/CUPTI/lib64
 # ========================
 # === ROS
 # ========================
-alias sb='source /opt/ros/noetic/setup.zsh && source ~/catkin_ws/devel/setup.zsh'
+alias rs='source /opt/ros/foxy/setup.zsh && source ~/ros2ws/install/setup.zsh'
+alias rs1='source /opt/ros/noetic/setup.zsh && source ~/catkin_ws/devel/setup.zsh'
+alias -g kk='"$(eval "$(fc -ln -1)" | tail -n 1)"'
+alias ros2cd='_ros2cd(){ cd "$(ros2 pkg prefix "$1")";}; _ros2cd'
+alias vpn='_openvpn(){ sudo -v; sudo openvpn --config /etc/openvpn/"$1" --auth-user-pass /etc/openvpn/pass.txt &;}; _openvpn'
+alias vpnoff='sudo killall openvpn'
+
+export PATH=$PATH:/home/shawn/.cargo/bin
 
 
 
