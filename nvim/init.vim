@@ -26,7 +26,6 @@ filetype plugin indent on
 set mouse=a    " 支持鼠标
 set encoding=utf-8
 let &t_ut=''    " 修复终端配色bug
-set autochdir
 let mapleader=" " " 设置空格键为LEADER键
 
 " ===
@@ -76,6 +75,13 @@ set wrap
 set linebreak
 set textwidth=80
 set formatoptions+=tmM  " warp for CJK
+set cmdheight=1
+" You will have bad experience for diagnostic messages when it's default 4000.
+set updatetime=300
+" don't give |ins-completion-menu| messages.
+set shortmess+=c
+" always show signcolumns
+set signcolumn=yes
 
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
@@ -394,7 +400,7 @@ Plug 'lervag/vimtex'
 
 " C/C++
 Plug 'jackguo380/vim-lsp-cxx-highlight'  " Highlighter for ccls
-Plug 'cdelledonne/vim-cmake'             " CMake in vim
+" Plug 'cdelledonne/vim-cmake'             " CMake in vim
 
 " Markdown
 Plug 'iamcco/markdown-preview.nvim', { 'do': ':call mkdp#util#install()', 'for': 'markdown', 'on': 'MarkdownPreview' }
@@ -483,13 +489,15 @@ silent! au BufEnter,BufRead,BufNewFile * silent! unmap if
 let g:coc_global_extensions = ['coc-python', 'coc-texlab', 'coc-vimlsp',
     \ 'coc-gitignore', 'coc-git', 'coc-explorer', 'coc-snippets', 'coc-json',
     \ 'coc-sumneko-lua', 'coc-cmake']
+" Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
+" Get correct comment highlighting for .json
+autocmd FileType json syntax match Comment +\/\/.\+$+
 
 " Open up coc-commands
-nnoremap <C-c> :CocCommand<CR>
+nnoremap coc :CocCommand<CR>
 
 " Useful commands
-nnoremap <silent> <space>y :<C-u>CocList -A --normal yank<cr>
 nmap     <silent> gd <Plug>(coc-definition)zz
 nmap     <silent> gy <Plug>(coc-type-definition)
 nmap     <silent> gi <Plug>(coc-implementation)
@@ -503,8 +511,8 @@ try
 endtry
 
 " Highlight the symbol and its references when holding the cursor.
-set updatetime=300
 autocmd CursorHold * silent call CocActionAsync('highlight')
+" Update signature help on jump placeholder
 au CursorHoldI * sil call CocActionAsync('showSignatureHelp')
 
 " Formatting selected code.
@@ -523,6 +531,13 @@ nmap gs <Plug>(coc-git-chunkinfo)
 " show commit contains current position
 nmap gc <Plug>(coc-git-commit)
 nmap gt :GitGutterSignsToggle<CR>
+
+" Add status line support, for integration with other plugin, checkout `:h coc-status`
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
+" ----- Using CocList -----
+" Show all diagnostics
+nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
 
 " ===
 " === vimtex
@@ -634,7 +649,7 @@ let g:vista#renderer#icons = {
 " === vim-rooter
 " ===
 let g:rooter_targets = '*.cpp,*.h,*.md'
-let g:rooter_patterns = ['src', 'CMakeList.txt']
+let g:rooter_patterns = ['src', 'CMakeList.txt', 'compile_commands.json']
 
 " ===
 " === Ultisnips
@@ -730,16 +745,6 @@ let g:VM_maps["Undo"]               = 'u'
 let g:VM_maps["Redo"]               = '<C-r>'
 let g:VM_maps["Select Cursor Down"] = '<M-C-j>'
 let g:VM_maps["Select Cursor Up"]   = '<M-C-k>'
-
-
-" ===
-" === cdelledonne/vim-cmake
-" ===
-let g:cmake_link_compile_commands=1
-let g:cmake_root_markers = ['.git','.ccls']
-let g:cmake_default_config = 'build'
-nmap <leader>cg :CMakeGenerate<cr>
-nmap <leader>cb :CMakeBuild<cr>
 
 
 " ===
