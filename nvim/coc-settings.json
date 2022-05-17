@@ -44,12 +44,18 @@
         "highlight": { "lsRanges" : true }
       }
     },
+
     "latex": {
     "command": "texlab",
     "ignoredRootPaths": ["~"],
     "filetypes": ["tex", "bib", "plaintex", "context"]
     }
   },
+
+  "diagnostic.errorSign": "✗",
+  "diagnostic.warningSign": "",
+  "diagnostic.infoSign": "ℹ",
+  "diagnostic.hintSign": "➤",
 
   // coc-explorer
   // https://github.com/weirongxu/coc-explorer#custom-mappings-example
