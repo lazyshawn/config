@@ -60,20 +60,19 @@
   // coc-explorer
   // https://github.com/weirongxu/coc-explorer#custom-mappings-example
   "explorer.keyMappings.global": {
-    "i": false, // cancel default mapkey
-
     "*": ["wait", "toggleSelection", "normal:j"],
     "<tab>": "actionMenu",
 
-    "h": ["wait", "collapse"],
-    "l": ["wait", "expandable?", "expand", "open"],
     "J": ["wait", "normal:5j"],
     "K": ["wait", "normal:5k"],
+    "L": ["wait", "expand:recursive"],
+    "H": ["wait", "collapse:recursive"],
 
     "gk": ["wait", "expandablePrev"],
     "gj": ["wait", "expandableNext"],
-    "gl": ["wait", "expand:recursive"],
-    "gh": ["wait", "collapse:recursive"],
+
+    "sv": "open:split",
+    "ss": "open:vsplit",
 
     "il": "preview:labeling",
     "ic": "preview:content",
@@ -96,8 +95,7 @@
     "f": "search",
     "F": "searchRecursive",
 
-    "zh": "toggleHidden",
-    "g<dot>": "toggleHidden",
+    "<c-h>": "toggleHidden",
     "R": "refresh",
 
     "[d": ["wait", "markPrev:diagnosticError:diagnosticWarning"],
@@ -105,10 +103,12 @@
     "[D": ["wait", "markPrev:diagnosticError"],
     "]D": ["wait", "markNext:diagnosticError"],
 
-    "[c": ["wait", "markPrev:git"],
-    "]c": ["wait", "markNext:git"],
+    "[g": ["wait", "markPrev:git"],
+    "]g": ["wait", "markNext:git"],
     ">>": "gitStage",
     "<<": "gitUnstage"
-  }
+  },
+  "explorer.icon.enableNerdfont": true,
+  "explorer.icon.source": "vim-devicons"
 }
 
