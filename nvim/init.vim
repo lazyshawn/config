@@ -219,6 +219,55 @@ endfunction
 autocmd InsertLeave * call Fcitx2en()
 " }}}
 
+" >> opening a terminal window ............................................. {{{
+noremap <LEADER><CR> :set splitbelow<CR>:split<CR>:res +10<CR>:term<CR>
+
+augroup TermHandling
+  autocmd!
+  " Turn off line numbers, listchars, auto enter insert mode and map esc to
+  " exit insert mode
+  autocmd TermOpen * setlocal listchars= nonumber norelativenumber
+        \ | startinsert
+augroup END
+
+function! LayoutTerm(size, orientation) abort
+  let timeout = 16.0
+  let animation_total = 120.0
+  let timer = {
+        \ 'size': a:size,
+        \ 'step': 1,
+        \ 'steps': animation_total / timeout
+        \}
+
+  if a:orientation == 'horizontal'
+    resize 1
+    function! timer.f(timer)
+      execute 'resize ' . string(&lines * self.size * (self.step / self.steps))
+      let self.step += 1
+    endfunction
+  else
+    vertical resize 1
+    function! timer.f(timer)
+      execute 'vertical resize ' . string(&columns * self.size * (self.step / self.steps))
+      let self.step += 1
+    endfunction
+  endif
+  call timer_start(float2nr(timeout), timer.f, {'repeat': float2nr(timer.steps)})
+endfunction
+
+" Open autoclosing terminal, with optional size and orientation
+function! OpenTerm(cmd, ...) abort
+  let orientation = get(a:, 2, 'horizontal')
+  if orientation == 'horizontal'
+    new | wincmd J
+  else
+    vnew | wincmd L
+  endif
+  call LayoutTerm(get(a:, 1, 0.5), orientation)
+  call termopen(a:cmd, {'on_exit': {j,c,e -> execute('if c == 0 | close | endif')}})
+endfunction
+" }}} ..........................................................................
+
 " >> smart compile {{{
 map <LEADER>r :call CompileRunGcc()<CR>
 func! CompileRunGcc()
@@ -280,7 +329,6 @@ function! ChineseCount() range
 endfunc
 vnoremap <F7> :call ChineseCount()<cr>
 " }}}
-
 
 " ===============
 " === Plug-in ===
@@ -553,6 +601,8 @@ augroup END
 
 
 " >> vim-markdown_setting .................................................. {{{
+" fix vim-markdown don't highlight '#' in header
+autocmd FileType markdown highlight link mkdHeading Delimiter
 " enable syntax conceal (bold, italic, link, and etc.)
 autocmd FileType markdown set conceallevel=2
 " turn on Latex math syntax extensions (useful for vimtex, ultisnips)
