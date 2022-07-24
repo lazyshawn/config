@@ -100,16 +100,49 @@ bindkey '\C-v' edit-command-line
 # ========================
 # === User Define
 # ========================
-# --- 空行(光标在行首)补全 cd
+# --- (光标在行首)补全 "cd " {{{
 user-complete(){
-    if [[ -n $BUFFER ]] ; then
-        zle expand-or-complete
-    else
-        BUFFER="cd ~/"
-        zle end-of-line
-    fi }
+case $BUFFER in
+"" ) # 空行
+BUFFER="cd ~/"
+zle end-of-line
+;;
+"cd " ) # TAB + 空格 替换为 "cd ~"
+BUFFER="cd $"
+zle end-of-line
+;;
+" " )
+BUFFER="!?" # 重复上一条 cd 指令(包括..)
+zle end-of-line
+;;
+"cd --" ) # "cd --" 替换为 "cd +"
+BUFFER="cd +"
+zle end-of-line
+zle expand-or-complete
+;;
+"cd +-" ) # "cd +-" 替换为 "cd -"
+BUFFER="cd -"
+zle end-of-line
+zle expand-or-complete
+;;
+* )
+zle expand-or-complete
+;;
+esac
+}
 zle -N user-complete
 bindkey "\t" user-complete
+# {{{
+# --- 空行(光标在行首)补全 cd
+# user-complete(){
+#     if [[ -n $BUFFER ]] ; then
+#         zle expand-or-complete
+#     else
+#         BUFFER="cd ~/"
+#         zle end-of-line
+#     fi }
+# zle -N user-complete
+# bindkey "\t" user-complete
 
 # --- 在命令前插入 sudo
 sudo-command-line() {

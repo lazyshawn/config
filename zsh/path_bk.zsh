@@ -58,6 +58,7 @@ alias -g kk='"$(eval "$(fc -ln -1)" | tail -n 1)"'
 alias ros2cd='_ros2cd(){ cd "$(ros2 pkg prefix "$1")";}; _ros2cd'
 alias vpn='_openvpn(){ sudo -v; sudo openvpn --config /etc/openvpn/"$1" --auth-user-pass /etc/openvpn/pass.txt &;}; _openvpn'
 alias vpnoff='sudo killall openvpn'
+alias cmake='cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON'
 
 export PATH=$PATH:/home/shawn/.cargo/bin
 

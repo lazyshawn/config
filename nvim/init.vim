@@ -27,11 +27,11 @@ set cmdheight=1
 " set <tab> behavior
 " https://vi.stackexchange.com/a/9473
 " expand <Tab> to <Space>
-set noexpandtab
+set expandtab
 " number of spaces to use for each step of (auto)indent
-set shiftwidth=4
+set shiftwidth=2
 " the display width of one <Tab> to how many spaces
-set tabstop=4
+set tabstop=2
 " the characters that VIM actually gets by pressing <Tab> in insert mode
 set softtabstop=2
 set autoindent
@@ -61,7 +61,7 @@ set virtualedit=block
 " Warp text
 " https://stackoverflow.com/questions/1272173/in-vim-how-do-i-break-one-really-long-line-into-multiple-lines
 set wrap linebreak
-set textwidth=80
+set textwidth=78
 " influence how Vim formats text (m:warp for CJK)
 set formatoptions+=tmBl
 " autocmd BufNewFile,BufRead * setlocal formatoptions-=cqn
@@ -99,7 +99,6 @@ inoremap <C-l> <C-o>a
 set ignorecase smartcase
 nnoremap n nzz
 nnoremap N Nzz
-exec "nohlsearch"
 nnoremap <LEADER>/ :nohlsearch<CR>
 " }}}
 
@@ -124,7 +123,7 @@ nnoremap > >>
 " Select all
 nnoremap <C-a> <ESC>ggVG
 " Placehold: Press , twice to jump to the next 'xxx' and edit it
-noremap ,, <Esc>/xxx<CR>:nohlsearch<CR>c4l
+noremap ,, <Esc>/xxx<CR>:nohlsearch<CR>c3l
 " }}}
 
 " >> tab window buffer {{{
@@ -351,7 +350,8 @@ Plug 'airblade/vim-rooter'    " Changes Vim working directory to project root
 Plug 'chrisbra/Colorizer'     " Show colors with :ColorHighlight
 
  " --- Debugger
-" Plug 'puremourning/vimspector', {'do': './install_gadget.py --enable-c --enable-python'}
+Plug 'puremourning/vimspector', {'do': './install_gadget.py --enable-c --enable-python'}
+" Plug 'mfussenegger/nvim-dap'
 
 " --- File navigation
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -375,6 +375,7 @@ Plug 'preservim/vim-markdown'
 Plug 'iamcco/markdown-preview.nvim', { 'do': ':call mkdp#util#install()', 'for': 'markdown', 'on': 'MarkdownPreview' }
 Plug 'mzlogin/vim-markdown-toc', { 'for': ['gitignore', 'markdown'] }  " auto toc
 Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeToggle' }
+" Plug 'lazyshawn/shawn-markdown'
 
 " Editor Enhancement
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
@@ -618,6 +619,11 @@ let g:mkdp_auto_close      = 1
 " specify browser to open preview page
 " google-chrome, chromium-browser
 let g:mkdp_browser         = 'chromium-browser'
+" https://github.com/iamcco/markdown-preview.nvim/issues/262#issuecomment-1126628094
+" function OpenMarkdownPreview (url)
+"   execute "silent ! chromium-browser --new-window " . a:url
+" endfunction
+" let g:mkdp_browserfunc = 'OpenMarkdownPreview'
 " set default theme (dark or light)
 let g:mkdp_theme           = 'dark'
 let g:mkdp_page_title      = '${name}'
@@ -732,6 +738,17 @@ let g:NERDCommentEmptyLines = 1
 let g:NERDTrimTrailingWhitespace = 1
 " Enable NERDCommenterToggle to check all selected lines is commented or not
 let g:NERDToggleCheckAllLines = 1
+" }}} ..........................................................................
+
+
+" >> puremourning/vimspector ............................................... {{{
+" let g:vimspector_enable_mappings = 'HUMAN'
+let g:vimspector_install_gadgets = [ 'debugpy', 'vscode-cpptools', 'CodeLLDB' ]
+nnoremap <LEADER>dd :call vimspector#Launch()<CR>
+nnoremap <LEADER>de :call vimspector#Reset()<CR>
+nnoremap <LEADER>dc :call vimspector#Continue()<CR>
+nnoremap <LEADER>db :call vimspector#ToggleBreakpoint()<CR>
+nnoremap <LEADER>di :call vimspector#ListBreakpoints()<CR>
 " }}} ..........................................................................
 
 
