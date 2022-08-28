@@ -202,6 +202,7 @@ augroup END
 noremap <LEADER>vi :e ~/.config/nvim/init.vim<CR>
 " Source Vim配置文件
 noremap <LEADER>R :source $MYVIMRC<CR>
+let g:python3_host_prog = '/usr/bin/python3'
 " }}} ..........................................................................
 
 " >> auto fcitx {{{
