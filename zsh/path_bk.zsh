@@ -62,5 +62,11 @@ alias cmake='cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON'
 
 export PATH=$PATH:/home/shawn/.cargo/bin
 
+# VPN
+alias v='_openvpn(){ sudo -v; sudo openvpn --config /etc/openvpn/"$1" --auth-user-pass /etc/openvpn/pass.txt | grep "Initialization" &;}; _openvpn'
+alias vv='sudo killall openvpn'
+# super kill
+alias sk='_supkill(){ kill $(ps -e | grep "$1" | awk "{print \$1}") ;}; _supkill'
+
 
 
