@@ -1,13 +1,12 @@
 #!/bin/bash
-# Breif:
-#     quickly create a workspace for multible project.
-#     C/C++, Python
-# Author:
-#     Lazyshawn
-# Version:
-#     v.0.1
-# Reference:
-#     RishabhRD/archrice: projectCreate
+#------------------------------------------------------
+# @author: lazyshawn
+# @file  : spro.sh
+# @brief : quickly create a workspace for multible project.
+# @param : c, cc, py
+# @ref   : RishabhRD/archrice: projectCreate
+# @vers  : v.0.1
+#------------------------------------------------------
 
 function help(){
   echo "usage: projectCreate -l lang -p projectName -c className"
@@ -68,23 +67,38 @@ function cpp_init(){
 
   (
     echo "cmake_minimum_required(VERSION 2.8.9)"
-    echo "project($projectName)"
+    echo -e "project($projectName)\n"
+    echo "set(CMAKE_CXX_STANDARD 17)"
+    echo "# Support degug"
+    echo 'SET(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g2 -ggdb")'
+    echo -e "SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")\n"
+
     echo "include_directories(include)"
-    echo 'file(GLOB_RECURSE SOURCES "src/*".cpp)'
-    echo "add_executable($exe_name \${SOURCES})"
-    echo "install(TARGETS $exe_name DESTINATION /usr/bin)"
+    echo "link_directories(lib)"
+    echo -e "set(LIBRARY_OUTPUT_PATH lib)\n"
+
+    echo "add_executable($projectName src/main.cpp)"
+    echo "install(TARGETS $projectName DESTINATION /usr/build)"
   ) > $projectName/CMakeLists.txt
+
+  (
+    echo "#include <iostream>"
+    echo "int main(int argc, char** argv) {"
+    echo '  printf("hello world\n");'
+    echo "  return 0;"
+    echo "}"
+  ) > $projectName/src/main.cpp
 
   (
     echo "#!/bin/bash"
     echo 'if [[ -z $1 ]]; then'
-    echo 'mkdir -p bin'
-    echo 'cd bin'
+    echo 'mkdir -p build'
+    echo 'cd build'
     echo 'cmake ..'
     echo 'make'
     echo 'elif [[ "$1" == "install" ]]; then'
-    echo 'mkdir -p bin'
-    echo 'cd bin'
+    echo 'mkdir -p build'
+    echo 'cd build'
     echo 'cmake ..'
     echo 'sudo make install'
     echo 'elif [[ "$1" == "debug" ]]; then'
@@ -93,42 +107,25 @@ function cpp_init(){
     echo 'cmake -DCMAKE_BUILD_TYPE=Debug ..'
     echo 'make'
     echo 'elif [[ "$1" == "project" ]]; then'
-    echo 'mkdir -p bin'
-    echo 'cd bin'
+    echo 'mkdir -p build'
+    echo 'cd build'
     echo 'cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 ..'
-    echo 'cp compile_commands.json ..'
+    # echo 'cp compile_commands.json ..'
     echo 'fi'
-  ) > $projectName/build
-  chmod u+x $projectName/build
+  ) > $projectName/build.sh
+  chmod u+x $projectName/build.sh
+  ln -s ${PWD}/$projectName/build/compile_commands.json ${PWD}/$projectName/compile_commands.json
 
   (
-    echo 'bin/*'
+    echo 'build/*'
     echo 'debug/*'
     echo 'compile_commands.json'
     echo '.vimspector.json'
     echo '.clangd/*'
   ) > $projectName/.gitignore
 
-  (
-    echo '{'
-    echo '"configurations": {'
-    echo '"Launch": {'
-    echo '"adapter": "vscode-cpptools",'
-    echo '"configuration": {'
-    echo '"request": "launch",'
-    echo "\"program\": \"debug/$exe_name\","
-    echo "\"cwd\": \"`pwd`\"," >> .vimspector.json
-    echo '"externalConsole": true,'
-    echo '"MIMode": "gdb"'
-    echo '}'
-    echo '}'
-    echo '}'
-    echo '}'
-  ) > $projectName/.vimspector.json
-
   [ "$git_init" == "true" ] && git init $projectName
-
-  cd $projectName && ./build project
+  cd $projectName && ./build.sh project
 }
 
 #############################################################################

@@ -12,6 +12,8 @@
   "python.linting.pylintEnabled": true,
   "python.linting.enabled": true,
 
+  // coc.nvim
+  "suggest.noselect": true,
   // coc-git
   "git.realtimeGutters": false,
   "git.addedSign.hlGroup": "GitGutterAdd",
