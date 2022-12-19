@@ -486,7 +486,7 @@ endfunction
 " fix the most annoying bug that coc has
 silent! au BufEnter,BufRead,BufNewFile * silent! unmap if
 
-let g:coc_global_extensions = ['coc-python', 'coc-texlab', 'coc-vimlsp',
+let g:coc_global_extensions = ['coc-pyright', 'coc-texlab', 'coc-vimlsp',
     \ 'coc-gitignore', 'coc-git', 'coc-explorer', 'coc-json',
     \ 'coc-cmake']
 " Use <c-space> to trigger completion.
@@ -750,6 +750,7 @@ let g:NERDToggleCheckAllLines = 1
 " >> puremourning/vimspector ............................................... {{{
 " let g:vimspector_enable_mappings = 'HUMAN'
 let g:vimspector_install_gadgets = [ 'debugpy', 'vscode-cpptools', 'CodeLLDB' ]
+let g:vimspector_variables_display_mode = 'full'
 nnoremap <LEADER>dd :call vimspector#Launch()<CR>
 nnoremap <LEADER>de :call vimspector#Reset()<CR>
 nnoremap <LEADER>dc :call vimspector#Continue()<CR>
