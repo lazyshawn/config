@@ -211,7 +211,7 @@ mode "$mode_system" {
 # ====================
 # --- Wallpaper
 # static mode
-exec_always --no-startup-id feh --bg-scale "/home/shawn/Pictures/wallpapers/gruvbox-city.png"
+exec_always --no-startup-id feh --bg-scale "/home/shawn/Documents/wallpapers/gruvbox-city.png"
 # random mode
 # exec --no-startup-id  ~/.config/i3/wallpaper.sh &
 
@@ -254,11 +254,14 @@ bar {
 }
 
 
+exec --no-startup-id fcitx5 -d
+
 # ====================
 # === Autostart
 # ====================
 # --- compton: 半透明终端
-exec_always compton
+# exec_always compton
+exec_always --no-startup-id picom &
 # --- 开机启动脚本
 # 禁用触摸板、禁用鼠标加速
 exec /home/shawn/.config/i3/scripts/touchpad.sh

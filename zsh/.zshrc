@@ -203,75 +203,54 @@ alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 # cmake
 alias cmake='cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1'
-# FUCK
-eval $(thefuck --alias fuck)
 
 
 # ========================
-# === Zinit
+# === Zsh/zi
 # ========================
-### Added by Zinit's installer
-if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
-    print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"
-    command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
-    command git clone https://github.com/zdharma/zinit "$HOME/.zinit/bin" && \
-        print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
-        print -P "%F{160}▓▒░ The clone has failed.%f%b"
+# --- ranger
+export VISUAL=nvim
+
+
+# ========================
+# === Zsh/zi
+# ========================
+if [[ ! -f $HOME/.zi/bin/zi.zsh ]]; then
+  print -P "%F{33}▓▒░ %F{160}Installing (%F{33}z-shell/zi%F{160})…%f"
+  command mkdir -p "$HOME/.zi" && command chmod go-rwX "$HOME/.zi"
+  command git clone -q --depth=1 --branch "main" https://github.com/z-shell/zi "$HOME/.zi/bin" && \
+    print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
+    print -P "%F{160}▓▒░ The clone has failed.%f%b"
 fi
+source "$HOME/.zi/bin/zi.zsh"
+# enable zi completions
+autoload -Uz _zi
+(( ${+_comps} )) && _comps[zi]=_zi
+# examples here -> https://wiki.zshell.dev/ecosystem/category/-annexes
+zicompinit # <- https://wiki.zshell.dev/docs/guides/commands
 
-source "$HOME/.zinit/bin/zinit.zsh"
-autoload -Uz _zinit
-(( ${+_comps} )) && _comps[zinit]=_zinit
-
-# Load a few important annexes, without Turbo
-# (this is currently required for annexes)
-zinit light-mode for \
-    zinit-zsh/z-a-rust \
-    zinit-zsh/z-a-as-monitor \
-    zinit-zsh/z-a-patch-dl \
-    zinit-zsh/z-a-bin-gem-node
-
-### End of Zinit's installer chunk
-
-
-# --- Zinit plugins
-# Press <C-R> to display history directives
-zinit light-mode for \
-    zsh-users/zsh-autosuggestions \
-    zdharma-continuum/fast-syntax-highlighting\
-    zdharma/history-search-multi-word \
-    rupa/z
-
-# zsh-autosuggestions
-bindkey '^l' autosuggest-execute
-bindkey '^j' autosuggest-accept
-# https://github.com/zsh-users/zsh-autosuggestions/issues/265#issuecomment-339235780
-bindkey '^k' forward-word
-bindkey '^h' backward-kill-word
-
-# Binary release in archive, from GitHub-releases page.
-# After automatic unpacking it provides program "fzf".
-zinit ice from"gh-r" as"program"
-zinit load junegunn/fzf-bin
-
-# ======================
-# === 主题设置
-# ======================
-# 初始化prompt
-autoload -Uz promptinit
-promptinit    
-# Pure
-# zinit ice pick"async.zsh" src"pure.zsh"
-# zinit light sindresorhus/pure
-# powerlevel10k
-zinit ice depth=1; zinit light romkatv/powerlevel10k
-
-
-# ======================
-# === Env
-# ======================
-source $HOME/.config/shawn_config/zsh/path.zsh
-
+# --- powerlevel10
+zi ice depth=1; zi light romkatv/powerlevel10k
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+# --- zsh-autosuggestions
+zi light zsh-users/zsh-autosuggestions
+# https://github.com/zsh-users/zsh-autosuggestions/issues/265#issuecomment-339235780
+bindkey '^l' autosuggest-execute
+bindkey '^j' autosuggest-accept
+bindkey '^k' forward-word
+bindkey '^h' backward-kill-word
+
+zi light zsh-users/zsh-syntax-highlighting
+# history-search-multi-word
+zi load z-shell/H-S-MW
+# zi light junegunn/fzf
+zi load rupa/z
+
+# auto startx
+if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
+    exec startx
+fi
+
+export LD_LIBRARY_PATH=/lib:/usr/lib:/usr/local/lib

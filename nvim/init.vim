@@ -14,7 +14,16 @@ endif
 set nocompatible
 filetype plugin indent on
 " enable mouse actions
-set mouse=a
+augroup MouseActionSetting
+  autocmd!
+  autocmd InsertEnter * set mouse=
+  autocmd InsertLeave * set mouse=a
+  " Visual enter
+  autocmd ModeChanged *:[vV\x16]* : set mouse=
+  " Visual leave
+  autocmd ModeChanged [vV\x16]*:* :set mouse=a
+augroup END
+
 set encoding=utf-8
 " set <Space> as <LEADER>
 let mapleader=" "
@@ -113,8 +122,8 @@ nnoremap sg :%s/
 " append space between english and chinese
 nnoremap ss :%s/[^\x00-\xff]\zs\ze\w\\|\w\zs\ze[^\x00-\xff]/ /g
 " Join lines (join! - produce extral space)
-nnoremap <LEADER>jj :join<CR>
-vnoremap <LEADER>jj :join<CR>
+nnoremap <LEADER>J :join<CR>
+vnoremap <LEADER>J :join<CR>
 " yank to system clipboard
 vnoremap Y "+y
 " quickly indent
@@ -209,10 +218,10 @@ let g:python3_host_prog = '/usr/bin/python3'
 " 退出插入模式和命令行模式自动切换到搜狗拼音模式源
 let g:input_toggle = 1
 function! Fcitx2en()
-  let s:input_status = system("fcitx-remote")
+  let s:input_status = system("fcitx5-remote")
   if s:input_status == 2
     let g:input_toggle = 1
-    let l:a = system("fcitx-remote -c")
+    let l:a = system("fcitx5-remote -c")
   endif
 endfunction
 " 退出插入模式(InsertLeave),命令行模式(CmdLineLeave)(使用逗号,分隔)
@@ -333,431 +342,11 @@ vnoremap <F7> :call ChineseCount()<cr>
 " ===============
 " === Plug-in ===
 " ===============
-" >> nvim_plug ............................................................. {{{
-call plug#begin('~/.config/nvim/plugged')
-" --- Pretty dress
-Plug 'morhetz/gruvbox'           " Themes
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'airblade/vim-gitgutter'    " Git gutter
-Plug 'tpope/vim-fugitive'        " git status in airline
-Plug 'ryanoasis/vim-devicons'    " pretty icons for vim
-Plug 'mhinz/vim-startify'        " The fancy start screen of vim
+"load lua files which list plugins
+lua require('plugins')
 
-" --- Other useful utilities
-" Plug 'wakatime/vim-wakatime'  " wakatime
-Plug 'makerj/vim-pdf'         " Make VIM as a PDF reader
-Plug 'airblade/vim-rooter'    " Changes Vim working directory to project root
-Plug 'chrisbra/Colorizer'     " Show colors with :ColorHighlight
+lua require('plugin-config/themes')
+lua require('settings')
+lua require('plugin-config/lsp_dap')
+lua require('plugin-config/cmp')
 
- " --- Debugger
-Plug 'puremourning/vimspector', {'do': './install_gadget.py --enable-c --enable-python'}
-" Plug 'mfussenegger/nvim-dap'
-
-" --- File navigation
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-
-" --- Easy Coding
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'SirVer/ultisnips'          " Snippets
-Plug 'lazyshawn/shawn-snippets'  " My snippets.
-" Plug 'liuchengxu/vista.vim'      " Require ctags, support LSP
-
-" Tex
-Plug 'lervag/vimtex'
-
-" C/C++
-Plug 'jackguo380/vim-lsp-cxx-highlight'  " Highlighter for ccls
-" Plug 'cdelledonne/vim-cmake'             " CMake in vim
-
-" Markdown
-Plug 'preservim/vim-markdown'
-Plug 'iamcco/markdown-preview.nvim', { 'do': ':call mkdp#util#install()', 'for': 'markdown', 'on': 'MarkdownPreview' }
-Plug 'mzlogin/vim-markdown-toc', { 'for': ['gitignore', 'markdown'] }  " auto toc
-Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeToggle' }
-" Plug 'lazyshawn/shawn-markdown'
-
-" Editor Enhancement
-Plug 'mg979/vim-visual-multi', {'branch': 'master'}
-Plug 'jiangmiao/auto-pairs'
-Plug 'mbbill/undotree'         " Undo Tree
-Plug 'tpope/vim-surround'      " Change or delete surround (cs/ds and etc.)
-Plug 'gcmt/wildfire.vim'       " in Visual mode, type i' to select all text in '', or type i) i] i} ip. This will caused select paragraph when press Enter;
-Plug 'preservim/nerdcommenter' " toggle comments
-
-call plug#end()
-" }}} ..........................................................................
-
-" >> plugin_setting ........................................................ {{{
-
-" >> nvim_themes ........................................................... {{{
-set termguicolors    " enable true colors support
-let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-color gruvbox
-set background=dark
-" set background=light
-" }}} ..........................................................................
-
-
-" >> vim-airline_setting ....................................................... {{{
-let g:airline_theme='gruvbox'
-" 使用powerline打过补丁的字体
-let g:airline#powerline_fonts = 1
-let g:bufferline_echo = 0
-let g:airline#extensions#whitespace#enabled = 0    " Whitespace detector
-" Install SourceCodePro fonts, and change terminal fonts;
-set guifont=Source\ Code\ Pro\ for\ Powerline:h15:cANSI
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
-" unicode symbols
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_alt_sep = ''
-let g:airline_symbols.crypt = ''
-let g:airline_symbols.linenr = '  '
-let g:airline_symbols.maxlinenr = ''
-let g:airline_symbols.branch = ''
-let g:airline_symbols.paste = 'ρ'
-let g:airline_symbols.spell = 'Ꞩ'
-let g:airline_symbols.notexists = 'Ɇ'
-" airline_tabeline
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#formatter = 'unique_tail'
-let g:airline#extensions#tabline#left_sep = ''
-let g:airline#extensions#tabline#left_alt_sep = ''
-" }}} ..........................................................................
-
-
-" >> vim-gitgutter_setting ................................................. {{{
-let g:gitgutter_map_keys = 0
-nmap [g <Plug>(GitGutterPrevHunk)
-nmap ]g <Plug>(GitGutterNextHunk)
-nmap <LEADER>hs <Plug>(GitGutterStageHunk)
-nmap <LEADER>hu <Plug>(GitGutterUndoHunk)
-nmap gt :GitGutterSignsToggle<CR>
-" }}} ..........................................................................
-
-
-" >> vim-rooter_setting .................................................... {{{
-let g:rooter_targets = '*.cpp,*.h,*.md,*.py'
-let g:rooter_patterns = ['CMakeList.txt', 'compile_commands.json', 'pyvenv.cfg']
-" }}} ..........................................................................
-
-
-" >> colorizer ............................................................. {{{
-" 显示十六进制格式的颜色
-let g:colorizer_syntax = 1
-" }}} ..........................................................................
-
-
-" >> fzf_setting ........................................................... {{{
-" properties
-let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
-autocmd! FileType fzf
-autocmd  FileType fzf set laststatus=0 noshowmode noruler
-  \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
-" key mappings
-noremap F :Files<CR>
-" }}} ..........................................................................
-
-
-" >> coc.nvim_setting ...................................................... {{{
-" Use tab for trigger completion with characters ahead and navigate.
-" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-inoremap <silent><expr> <TAB>
-      \ coc#pum#visible() ? coc#pum#next(1) :
-      \ CheckBackspace() ? "\<Tab>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
-
-" Make <CR> to accept selected completion item or notify coc.nvim to format
-" <C-g>u breaks current undo, please make your own choice.
-inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-
-function! CheckBackspace() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-" fix the most annoying bug that coc has
-silent! au BufEnter,BufRead,BufNewFile * silent! unmap if
-
-let g:coc_global_extensions = ['coc-pyright', 'coc-texlab', 'coc-vimlsp',
-    \ 'coc-gitignore', 'coc-git', 'coc-explorer', 'coc-json',
-    \ 'coc-cmake']
-" Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
-" Get correct comment highlighting for .json
-autocmd FileType json syntax match Comment +\/\/.\+$+
-
-" Open up coc-commands
-nnoremap coc :CocCommand<CR>
-
-" Basic key bindings
-nmap     <silent> gd <Plug>(coc-definition)zz
-nmap     <silent> gy <Plug>(coc-type-definition)
-nmap     <silent> gi <Plug>(coc-implementation)
-nmap     <silent> gr <Plug>(coc-references)
-nmap     <leader>rn <Plug>(coc-rename)
-nmap     tt :CocCommand explorer<CR>
-nmap     so :CocCommand workspace.showOutput<CR>
-nn <silent> <C-d> :call CocActionAsync('doHover')<cr>
-try
-    nmap <silent> gj :call CocAction('diagnosticNext')<cr>
-    nmap <silent> gk :call CocAction('diagnosticPrevious')<cr>
-endtry
-
-" Highlight the symbol and its references when holding the cursor.
-autocmd CursorHold *.* silent call CocActionAsync('highlight')
-augroup my_coc_group
-  autocmd!
-  " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  " Update signature help on jump placeholder.
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
-
-" Formatting selected code.
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
-
-" ----- coc.git -----
-" navigate chunks of current buffer
-" nmap [g <Plug>(coc-git-prevchunk)
-" nmap ]g <Plug>(coc-git-nextchunk)
-" show chunk diff at current position
-nmap gs <Plug>(coc-git-chunkinfo)
-" show commit contains current position
-nmap gc <Plug>(coc-git-commit)
-nmap gt :GitGutterSignsToggle<CR>
-
-" Add status line support, for integration with other plugin, checkout `:h coc-status`
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-
-" ----- Using CocList -----
-" Show all diagnostics
-nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
-" Neovim doesn't allows request during request, so you have to use
-autocmd User CocDiagnosticChange call CocActionAsync('diagnosticList', function('CocUpdateDiagnostics'))
-function! CocUpdateDiagnostics(error, diagnostics) abort
-  call CocActionAsync('quickfixes', {err, actions -> execute('echom '.string(actions))})
-endfunction
-" }}} ..........................................................................
-
-
-" >> ultisnips_setting ..................................................... {{{
-" properties
-let g:UltiSnipsSnippetDirectories = [$HOME.'/.config/nvim/plugged/shawn-snippets/UltiSnips/']
-silent! au BufEnter,BufRead,BufNewFile * silent! unmap <c-r>
-" key mappings
-inoremap <c-k> <nop>
-let g:UltiSnipsExpandTrigger="<c-j>"
-let g:UltiSnipsJumpForwardTrigger="<c-j>"
-let g:UltiSnipsJumpBackwardTrigger="<c-k>"
-" }}} ..........................................................................
-
-
-" >> vista.vim_setting ..................................................... {{{
-" properties
-let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
-let g:vista_default_executive = 'ctags'
-let g:vista_fzf_preview = ['right:50%']
-let g:vista#renderer#enable_icon = 1
-let g:vista#renderer#icons = {
-\   "function": "",
-\   "variable": "",
-\   "map":      "",
-\   "augroup":  "",
-\  }
-" key mappings
-noremap <silent> M :Vista!!<CR>
-" }}} ..........................................................................
-
-
-" >> vimtex_setting ........................................................ {{{
-let g:vimtex_view_method = 'zathura'
-let g:vimtex_compiler_latexmk_engines = {'_': '-xelatex'}
-let g:vimtex_fold_enabled = 1
-let g:vimtex_complete_enabled = 0
-filetype plugin indent on
-if empty(v:servername) && exists('*remote_startserver')
-  call remote_startserver('VIM')
-endif
-" Close viewers when VimTeX buffers are closed
-function! CloseViewers()
-  if executable('xdotool')
-        \ && exists('b:vimtex.viewer.xwin_id')
-        \ && b:vimtex.viewer.xwin_id > 0
-    call system('xdotool windowclose '. b:vimtex.viewer.xwin_id)
-  endif
-endfunction
-augroup vimtex_close_viewers
-  autocmd!
-  autocmd User VimtexEventQuit call CloseViewers()
-augroup END
-" focus on vim after forward search
-augroup vimtex_focus_on_vim
-  autocmd!
-  autocmd User VimtexEventView call b:vimtex.viewer.xdo_focus_vim()
-augroup END
-" }}} ..........................................................................
-
-
-" >> vim-markdown_setting .................................................. {{{
-" fix vim-markdown don't highlight '#' in header
-autocmd FileType markdown highlight link mkdHeading Delimiter
-" enable syntax conceal (bold, italic, link, and etc.)
-autocmd FileType markdown set conceallevel=2
-" turn on Latex math syntax extensions (useful for vimtex, ultisnips)
-let g:tex_conceal = ""
-let g:vim_markdown_math = 1
-" disabling conceal for code fences
-let g:vim_markdown_conceal_code_blocks = 0
-" }}} ..........................................................................
-
-
-" >> markdown-preview.nvim_setting ......................................... {{{
-let g:mkdp_auto_close      = 1
-" specify browser to open preview page
-" google-chrome, chromium-browser
-let g:mkdp_browser         = 'chromium-browser'
-" https://github.com/iamcco/markdown-preview.nvim/issues/262#issuecomment-1126628094
-" function OpenMarkdownPreview (url)
-"   execute "silent ! chromium-browser --new-window " . a:url
-" endfunction
-" let g:mkdp_browserfunc = 'OpenMarkdownPreview'
-" set default theme (dark or light)
-let g:mkdp_theme           = 'dark'
-let g:mkdp_page_title      = '${name}'
-" use a custom markdown/highlight style must be absolute path
-let g:mkdp_markdown_css    = ''
-let g:mkdp_highlight_css   = ''
-" options for markdown render
-let g:mkdp_preview_options = {
-   \ 'mkit': {},
-   \ 'katex': {},
-   \ 'uml': {},
-   \ 'maid': {},
-   \ 'disable_sync_scroll': 0,
-   \ 'sync_scroll_type': 'middle',
-   \ 'hide_yaml_meta': 1
-   \ }
-" }}} ..........................................................................
-
-
-" >> vim-markdown-toc_setting .............................................. {{{
-" properties
-let g:vmt_auto_update_on_save = 0
-let g:vmt_dont_insert_fence = 0
-let g:vmt_cycle_list_item_markers = 1
-let g:vmt_fence_text              = 'TOC'
-let g:vmt_fence_closing_text      = '/TOC'
-" key mappings
-nmap toc :GenTocGFM<CR>
-" }}} ..........................................................................
-
-
-" >> vim-table-model_setting ............................................... {{{
-" properties
-function! s:isAtStartOfLine(mapping)
-  let text_before_cursor = getline('.')[0 : col('.')-1]
-  let mapping_pattern = '\V' . escape(a:mapping, '\')
-  let comment_pattern = '\V' . escape(substitute(&l:commentstring, '%s.*$', '', ''), '\')
-  return (text_before_cursor =~? '^' . ('\v(' . comment_pattern . '\v)?') . '\s*\v' . mapping_pattern . '\v$')
-endfunction
-
-inoreabbrev <expr> <bar><bar>
-  \ <SID>isAtStartOfLine('\|\|') ?
-  \ '<c-o>:TableModeEnable<cr><bar><space><bar><left><left>' : '<bar><bar>'
-inoreabbrev <expr> __
-  \ <SID>isAtStartOfLine('__') ?
-  \ '<c-o>:silent! TableModeDisable<cr>' : '__'
-
-" key mappings
-noremap <LEADER>tm :TableModeToggle<CR>
-let g:table_mode_disable_mappings = 1
-let g:table_mode_cell_text_object_i_map = 'k<Bar>'
-" }}} ..........................................................................
-
-
-" >> vim-visual-multi_setting .............................................. {{{
-" https://github.com/mg979/vim-visual-multi/blob/master/doc/vm-mappings.txt
-let g:VM_leader                     ='<Space><Space>'
-let g:VM_maps                       = {}
-let g:VM_maps["Undo"]               = 'u'
-let g:VM_maps["Redo"]               = '<C-r>'
-let g:VM_maps["Select Cursor Down"] = '<M-C-j>'
-let g:VM_maps["Select Cursor Up"]   = '<M-C-k>'
-" }}} ..........................................................................
-
-
-" >> auto-pairs_setting .................................................... {{{
-" properties
-let g:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"','`':'`'}
-let g:AutoPairsFlyMode = 1
-" key mappings
-let g:AutoPairsShortcutFastWrap = '<C-p>'
-" }}} ..........................................................................
-
-
-" >> undotree_setting ...................................................... {{{
-" properties
-" e.g. using 'd' instead of 'days' to save some space.
-if !exists('g:undotree_ShortIndicators')
-    let g:undotree_ShortIndicators = 1
-endif
-" whether let undotree window get focus after being opened
-if !exists('g:undotree_SetFocusWhenToggle')
-    let g:undotree_SetFocusWhenToggle = 1
-endif
-" key mappings
-nmap U :call undotree#UndotreeToggle()<CR>
-" }}} ..........................................................................
-
-
-" >> wildfire_setting ...................................................... {{{
-" this selects the next closest text object.
-map ;; <plug>(wildfire-fuel)
-" This selects the previous closest text object.
-" vmap '' <Plug>(wildfire-water)
-" }}} ..........................................................................
-
-
-" >> nerdcomment_setting ................................................... {{{
-" Add spaces after comment delimiters by default
-let g:NERDSpaceDelims = 1
-" Use compact syntax for prettified multi-line comments
-let g:NERDCompactSexyComs = 1
-" Align line-wise comment delimiters flush left instead of following code indentation
-let g:NERDDefaultAlign = 'left'
-" Set a language to use its alternate delimiters by default
-let g:NERDAltDelims_java = 1
-" Add your own custom formats or override the defaults
-let g:NERDCustomDelimiters = { 'c': { 'left': '/*','right': '*/' } }
-" Allow commenting and inverting empty lines (useful when commenting a region)
-let g:NERDCommentEmptyLines = 1
-" Enable trimming of trailing whitespace when uncommenting
-let g:NERDTrimTrailingWhitespace = 1
-" Enable NERDCommenterToggle to check all selected lines is commented or not
-let g:NERDToggleCheckAllLines = 1
-" }}} ..........................................................................
-
-
-" >> puremourning/vimspector ............................................... {{{
-" let g:vimspector_enable_mappings = 'HUMAN'
-let g:vimspector_install_gadgets = [ 'debugpy', 'vscode-cpptools', 'CodeLLDB' ]
-let g:vimspector_variables_display_mode = 'full'
-nnoremap <LEADER>dd :call vimspector#Launch()<CR>
-nnoremap <LEADER>de :call vimspector#Reset()<CR>
-nnoremap <LEADER>dc :call vimspector#Continue()<CR>
-nnoremap <LEADER>db :call vimspector#ToggleBreakpoint()<CR>
-nnoremap <LEADER>di :call vimspector#ListBreakpoints()<CR>
-" }}} ..........................................................................
-
-
-" }}} ..........................................................................
-" ============ End of Plugin Settings ============

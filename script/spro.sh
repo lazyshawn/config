@@ -59,27 +59,50 @@ function py_init(){
 
 function cpp_init(){
   echo "Initializing C/C++ project..."
-  
-  mkdir $projectName/src
-  mkdir $projectName/include
+
   mkdir $projectName/doc
+  mkdir $projectName/include
+  mkdir $projectName/lib
+  mkdir $projectName/src
   touch $projectName/src/main.cpp
 
   (
-    echo "cmake_minimum_required(VERSION 2.8.9)"
-    echo -e "project($projectName)\n"
-    echo "set(CMAKE_CXX_STANDARD 17)"
+    echo "cmake_minimum_required(VERSION 3.15)"
+    echo -e "project($projectName VERSION 1.0.0)\n"
+
+    echo "SET(CMAKE_CXX_STANDARD 17)"
     echo "# Support degug"
     echo 'SET(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g2 -ggdb")'
-    echo -e "SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")\n"
+    echo -e "#SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")\n"
 
-    echo "include_directories(include)"
-    echo "link_directories(lib)"
-    echo -e "set(LIBRARY_OUTPUT_PATH lib)\n"
+    echo "if(WIN32)"
+    echo "  # create symbol for exporting lib for dynmic library"
+    echo "  SET(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)"
+    echo "  # control where the static and shared libraries are built so that on windows"
+    echo "  # we don't need to tinker with the path to run the executable"
+    echo '  set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}")'
+    echo '  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}")'
+    echo '  set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}")'
+    echo "  # Build static in windows"
+    echo "  option(BUILD_SHARED_LIBS "Build using shared libraries" OFF)"
+    echo "  # Set the runtime lib for MSCV (global)"
+    echo '  #set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")'
+    echo "else()"
+    echo '  option(BUILD_SHARED_LIBS "Build using shared libraries" ON)'
+    echo -e "endif()\n"
 
-    echo "add_executable($projectName src/main.cpp)"
-    echo "install(TARGETS $projectName DESTINATION /usr/build)"
+    echo "# Set the installation directory"
+    echo -e 'SET(CMAKE_INSTALL_PREFIX "${PROJECT_BINARY_DIR}/out/${PROJECT_NAME}-${CMAKE_BUILD_TYPE}")\n'
+
+    echo "add_subdirectory(src)"
   ) > $projectName/CMakeLists.txt
+
+  (
+    echo "add_executable($projectName main.cpp)"
+    echo "target_include_directories($projectName PUBLIC"
+    echo "  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+    echo -e "  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>\n)"
+  ) > $projectName/src/CMakeLists.txt
 
   (
     echo "#include <iostream>"
@@ -100,7 +123,7 @@ function cpp_init(){
     echo 'mkdir -p build'
     echo 'cd build'
     echo 'cmake ..'
-    echo 'sudo make install'
+    echo 'make install'
     echo 'elif [[ "$1" == "debug" ]]; then'
     echo 'mkdir -p debug'
     echo 'cd debug'
@@ -118,10 +141,11 @@ function cpp_init(){
 
   (
     echo 'build/*'
-    echo 'debug/*'
     echo 'compile_commands.json'
-    echo '.vimspector.json'
     echo '.clangd/*'
+    echo '.vs'
+    echo 'out'
+    echo 'data'
   ) > $projectName/.gitignore
 
   [ "$git_init" == "true" ] && git init $projectName
